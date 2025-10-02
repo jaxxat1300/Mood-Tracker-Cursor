@@ -67,7 +67,20 @@ npm start
 npm run build
 ```
 
-## 🌐 Live Demo & Deployment
+## 🌐 Live Demo & Project Website
+
+### 🚀 **Live Demo**: [Try MoodFlow Now!](https://yourusername.github.io/moodflow)
+### 📖 **Project Website**: [Visit Project Page](https://yourusername.github.io/moodflow/docs)
+
+> Replace `yourusername` with your actual GitHub username
+
+## 🎬 Demo & Screenshots
+
+![MoodFlow Demo](docs/assets/moodflow-demo.gif)
+
+*Complete demo showing onboarding, mood tracking, journaling, and activities*
+
+## 🌐 Deployment Options
 
 ### Deploy Your Own Instance
 
