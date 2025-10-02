@@ -69,10 +69,8 @@ npm run build
 
 ## 🌐 Live Demo & Project Website
 
-### 🚀 **Live Demo**: [Try MoodFlow Now!](https://yourusername.github.io/moodflow)
-### 📖 **Project Website**: [Visit Project Page](https://yourusername.github.io/moodflow/docs)
-
-> Replace `yourusername` with your actual GitHub username
+### 🚀 **Live Demo**: [Try MoodFlow Now!](https://jaxxat1300.github.io/Mood-Tracker-Cursor)
+### 📖 **Project Website**: [Visit Project Page](https://jaxxat1300.github.io/Mood-Tracker-Cursor/docs)
 
 ## 🎬 Demo & Screenshots
 
