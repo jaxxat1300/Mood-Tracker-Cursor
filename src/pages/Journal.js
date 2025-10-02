@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getJournalEntries, saveJournalEntry, deleteJournalEntry } from '../utils/storage';
-import { BookOpen, Plus, Trash2, Calendar } from 'lucide-react';
+import { BookOpen, Plus, Trash2, Calendar, Sparkles, Shuffle, Heart } from 'lucide-react';
 
 const Journal = () => {
   const [entries, setEntries] = useState([]);
   const [showNewEntry, setShowNewEntry] = useState(false);
   const [newEntryText, setNewEntryText] = useState('');
   const [newEntryTitle, setNewEntryTitle] = useState('');
+  const [currentPrompt, setCurrentPrompt] = useState('');
+  const [showPrompts, setShowPrompts] = useState(false);
 
   useEffect(() => {
     const journalEntries = getJournalEntries();
@@ -51,6 +53,37 @@ const Journal = () => {
     });
   };
 
+  const funPrompts = [
+    "If your day was a movie, what genre would it be and why?",
+    "Write about your day using only emojis, then translate it!",
+    "What would your pet (or dream pet) think about your day?",
+    "Describe today's weather and how it matched your mood.",
+    "If you could give today a soundtrack, what songs would be on it?",
+    "Write a haiku about something that made you smile today.",
+    "What superpower would have made your day easier?",
+    "If today was a color, what would it be and why?",
+    "Write a letter to yesterday's you with advice for today.",
+    "What's one thing that happened today that you want to remember forever?",
+    "If you could redo one moment from today, what would it be?",
+    "Describe your day as if you're a food critic reviewing a meal.",
+    "What would you tell a friend who had the exact same day as you?",
+    "If your day was a book chapter, what would the title be?",
+    "Write about the most unexpected thing that happened today."
+  ];
+
+  const getRandomPrompt = () => {
+    const randomPrompt = funPrompts[Math.floor(Math.random() * funPrompts.length)];
+    setCurrentPrompt(randomPrompt);
+    setNewEntryTitle('Prompt Response');
+    setShowPrompts(true);
+  };
+
+  const usePrompt = () => {
+    setNewEntryText(`Prompt: ${currentPrompt}\n\nMy response: `);
+    setShowPrompts(false);
+    setShowNewEntry(true);
+  };
+
   return (
     <div className="min-h-screen px-4 py-6">
       <div className="max-w-md mx-auto space-y-6">
@@ -63,14 +96,56 @@ const Journal = () => {
           <p className="text-gray-600 mt-1">Capture your thoughts and reflections</p>
         </div>
 
-        {/* New entry button */}
-        <button
-          onClick={() => setShowNewEntry(!showNewEntry)}
-          className="w-full btn-primary flex items-center justify-center space-x-2"
-        >
-          <Plus size={20} />
-          <span>New Entry</span>
-        </button>
+        {/* Action buttons */}
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            onClick={() => setShowNewEntry(!showNewEntry)}
+            className="btn-primary flex items-center justify-center space-x-2"
+          >
+            <Plus size={20} />
+            <span>New Entry</span>
+          </button>
+          <button
+            onClick={getRandomPrompt}
+            className="btn-secondary flex items-center justify-center space-x-2"
+          >
+            <Sparkles size={20} />
+            <span>Fun Prompt</span>
+          </button>
+        </div>
+
+        {/* Fun prompt modal */}
+        {showPrompts && (
+          <div className="card border-2 border-accent-200 bg-accent-50">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-accent-900">✨ Fun Writing Prompt</h2>
+              <button
+                onClick={() => getRandomPrompt()}
+                className="p-2 text-accent-600 hover:bg-accent-100 rounded-lg transition-colors"
+              >
+                <Shuffle size={20} />
+              </button>
+            </div>
+            <div className="bg-white p-4 rounded-lg mb-4">
+              <p className="text-gray-700 leading-relaxed italic">"{currentPrompt}"</p>
+            </div>
+            <div className="flex space-x-3">
+              <button
+                onClick={usePrompt}
+                className="flex-1 btn-primary flex items-center justify-center space-x-2"
+              >
+                <Heart size={16} />
+                <span>Use This Prompt</span>
+              </button>
+              <button
+                onClick={() => setShowPrompts(false)}
+                className="btn-secondary"
+              >
+                Maybe Later
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* New entry form */}
         {showNewEntry && (
@@ -159,18 +234,33 @@ const Journal = () => {
           )}
         </div>
 
-        {/* Journal prompts */}
+        {/* Journal tips and stats */}
         {entries.length > 0 && (
-          <div className="bg-accent-50 border border-accent-200 rounded-xl p-4">
-            <h3 className="font-medium text-accent-800 mb-2">✨ Journal Prompts</h3>
-            <ul className="text-sm text-accent-700 space-y-1">
-              <li>• What am I grateful for today?</li>
-              <li>• What challenged me and how did I handle it?</li>
-              <li>• What made me smile today?</li>
-              <li>• How do I want to feel tomorrow?</li>
-            </ul>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="card text-center">
+              <div className="text-2xl font-bold text-secondary-600 mb-1">{entries.length}</div>
+              <div className="text-sm text-gray-600">Total Entries</div>
+            </div>
+            <div className="card text-center">
+              <div className="text-2xl font-bold text-accent-600 mb-1">
+                {Math.ceil(entries.length / 7)}
+              </div>
+              <div className="text-sm text-gray-600">Weeks Journaling</div>
+            </div>
           </div>
         )}
+
+        {/* Fun journaling tips */}
+        <div className="bg-gradient-to-r from-accent-50 to-secondary-50 border border-accent-200 rounded-xl p-4">
+          <h3 className="font-medium text-accent-800 mb-2">💡 Make Journaling Fun!</h3>
+          <ul className="text-sm text-accent-700 space-y-1">
+            <li>• Try writing with your non-dominant hand</li>
+            <li>• Use different colors for different moods</li>
+            <li>• Draw doodles or add emojis to your entries</li>
+            <li>• Write letters to your future or past self</li>
+            <li>• Create lists: favorites, goals, dreams</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

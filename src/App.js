@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Onboarding from './pages/Onboarding';
 import Home from './pages/Home';
 import Journal from './pages/Journal';
+import Notes from './pages/Notes';
 import Activities from './pages/Activities';
 import Profile from './pages/Profile';
 
@@ -26,6 +27,10 @@ function App() {
           <Route 
             path="/journal" 
             element={userOnboarded ? <Journal /> : <Navigate to="/onboarding" replace />} 
+          />
+          <Route 
+            path="/notes" 
+            element={userOnboarded ? <Notes /> : <Navigate to="/onboarding" replace />} 
           />
           <Route 
             path="/activities" 

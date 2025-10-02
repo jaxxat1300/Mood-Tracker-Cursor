@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Puzzle, BookOpen, Wind, ArrowLeft } from 'lucide-react';
+import { Sparkles, Puzzle, BookOpen, Wind, ArrowLeft, Gamepad2, Target, Zap } from 'lucide-react';
 
 const Activities = () => {
   const [selectedActivity, setSelectedActivity] = useState(null);
@@ -7,16 +7,32 @@ const Activities = () => {
   const activities = [
     {
       id: 'puzzle',
-      title: 'Daily Puzzle',
-      description: 'Challenge your mind with a quick brain teaser',
+      title: 'Daily Riddles',
+      description: 'Challenge your mind with brain teasers',
       icon: Puzzle,
       color: 'bg-purple-100',
       textColor: 'text-purple-600',
     },
     {
+      id: 'hangman',
+      title: 'Hangman Game',
+      description: 'Guess the wellness-themed words',
+      icon: Gamepad2,
+      color: 'bg-orange-100',
+      textColor: 'text-orange-600',
+    },
+    {
+      id: 'word-game',
+      title: 'Word Association',
+      description: 'Connect words and boost creativity',
+      icon: Target,
+      color: 'bg-pink-100',
+      textColor: 'text-pink-600',
+    },
+    {
       id: 'journal-prompt',
-      title: 'Guided Journal',
-      description: 'Reflect with a thoughtful writing prompt',
+      title: 'Fun Journal Prompts',
+      description: 'Creative and engaging writing prompts',
       icon: BookOpen,
       color: 'bg-blue-100',
       textColor: 'text-blue-600',
@@ -29,17 +45,27 @@ const Activities = () => {
       color: 'bg-green-100',
       textColor: 'text-green-600',
     },
+    {
+      id: 'quick-games',
+      title: 'Quick Mind Games',
+      description: 'Fast games to boost your mood',
+      icon: Zap,
+      color: 'bg-yellow-100',
+      textColor: 'text-yellow-600',
+    },
   ];
 
   const journalPrompts = [
-    "What are three things that brought you joy this week?",
-    "Describe a moment when you felt proud of yourself recently.",
-    "What would you tell your younger self about handling difficult emotions?",
-    "Write about a person who makes you feel supported and why.",
-    "What does self-care look like for you today?",
-    "Describe your ideal day. What elements can you incorporate into your real life?",
-    "What challenge are you currently facing, and what strengths do you have to handle it?",
-    "Write about a time when you overcame something difficult. What did you learn?",
+    "If you could have dinner with any fictional character, who would it be and why?",
+    "Write about your dream vacation using only emojis, then translate it into words.",
+    "What superpower would you choose and how would you use it to help others?",
+    "Describe your perfect day using all five senses.",
+    "If your life was a movie, what would be the soundtrack for today?",
+    "Write a letter to your future self 5 years from now.",
+    "What would you do if you had an extra hour in every day?",
+    "Create a recipe for happiness using ingredients from your life.",
+    "If you could time travel, would you go to the past or future? Why?",
+    "Write about a small moment today that made you smile.",
   ];
 
   const puzzles = [
@@ -54,10 +80,41 @@ const Activities = () => {
       hint: "Think about walking and what you create as you move."
     },
     {
-      question: "What has keys but no locks, space but no room, and you can enter but can't go inside?",
-      answer: "A keyboard",
-      hint: "Think about something you use every day with your computer."
+      question: "What gets wetter the more it dries?",
+      answer: "A towel",
+      hint: "Think about something you use after a shower."
     },
+    {
+      question: "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?",
+      answer: "A map",
+      hint: "Think about something that shows places but doesn't contain them."
+    },
+    {
+      question: "What can travel around the world while staying in a corner?",
+      answer: "A stamp",
+      hint: "Think about something small that goes on mail."
+    },
+  ];
+
+  const hangmanWords = [
+    { word: 'HAPPINESS', hint: 'A positive emotion' },
+    { word: 'GRATITUDE', hint: 'Being thankful' },
+    { word: 'MINDFULNESS', hint: 'Being present in the moment' },
+    { word: 'WELLNESS', hint: 'State of being healthy' },
+    { word: 'SERENITY', hint: 'Peaceful calmness' },
+    { word: 'BALANCE', hint: 'Harmony in life' },
+    { word: 'COURAGE', hint: 'Bravery in facing challenges' },
+    { word: 'COMPASSION', hint: 'Caring for others' },
+    { word: 'RESILIENCE', hint: 'Bouncing back from difficulties' },
+    { word: 'OPTIMISM', hint: 'Looking on the bright side' },
+  ];
+
+  const wordAssociations = [
+    { start: 'CALM', associations: ['PEACE', 'QUIET', 'OCEAN', 'BREATH'] },
+    { start: 'JOY', associations: ['LAUGHTER', 'SUNSHINE', 'CELEBRATION', 'SMILE'] },
+    { start: 'GROWTH', associations: ['LEARNING', 'CHANGE', 'PROGRESS', 'FLOWER'] },
+    { start: 'STRENGTH', associations: ['COURAGE', 'POWER', 'RESILIENCE', 'MOUNTAIN'] },
+    { start: 'HOPE', associations: ['FUTURE', 'LIGHT', 'DREAMS', 'RAINBOW'] },
   ];
 
   const getRandomPrompt = () => {
@@ -72,13 +129,27 @@ const Activities = () => {
     switch (selectedActivity) {
       case 'puzzle':
         return <PuzzleActivity puzzle={getRandomPuzzle()} />;
+      case 'hangman':
+        return <HangmanGame word={getRandomHangmanWord()} />;
+      case 'word-game':
+        return <WordAssociationGame game={getRandomWordAssociation()} />;
       case 'journal-prompt':
         return <JournalPromptActivity prompt={getRandomPrompt()} />;
       case 'breathing':
         return <BreathingActivity />;
+      case 'quick-games':
+        return <QuickGamesActivity />;
       default:
         return null;
     }
+  };
+
+  const getRandomHangmanWord = () => {
+    return hangmanWords[Math.floor(Math.random() * hangmanWords.length)];
+  };
+
+  const getRandomWordAssociation = () => {
+    return wordAssociations[Math.floor(Math.random() * wordAssociations.length)];
   };
 
   if (selectedActivity) {
@@ -239,6 +310,266 @@ const JournalPromptActivity = ({ prompt }) => {
         <div className="mt-4 text-sm text-gray-500">
           <p>💡 There are no right or wrong answers. Write whatever comes to mind.</p>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const HangmanGame = ({ word }) => {
+  const [guessedLetters, setGuessedLetters] = useState([]);
+  const [wrongGuesses, setWrongGuesses] = useState(0);
+  const [showHint, setShowHint] = useState(false);
+  const maxWrongGuesses = 6;
+
+  const handleGuess = (letter) => {
+    if (guessedLetters.includes(letter)) return;
+    
+    setGuessedLetters([...guessedLetters, letter]);
+    
+    if (!word.word.includes(letter)) {
+      setWrongGuesses(wrongGuesses + 1);
+    }
+  };
+
+  const getDisplayWord = () => {
+    return word.word.split('').map(letter => 
+      guessedLetters.includes(letter) ? letter : '_'
+    ).join(' ');
+  };
+
+  const isGameWon = () => {
+    return word.word.split('').every(letter => guessedLetters.includes(letter));
+  };
+
+  const isGameLost = () => {
+    return wrongGuesses >= maxWrongGuesses;
+  };
+
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500 rounded-2xl mb-4">
+          <Gamepad2 className="w-8 h-8 text-white" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Hangman Game</h2>
+        <p className="text-gray-600 mt-1">Guess the wellness word!</p>
+      </div>
+
+      <div className="card text-center">
+        <div className="mb-6">
+          <div className="text-3xl font-mono font-bold text-gray-900 mb-4 tracking-wider">
+            {getDisplayWord()}
+          </div>
+          <p className="text-gray-600">Wrong guesses: {wrongGuesses}/{maxWrongGuesses}</p>
+        </div>
+
+        {!showHint && (
+          <button
+            onClick={() => setShowHint(true)}
+            className="mb-4 btn-secondary text-sm"
+          >
+            Show Hint
+          </button>
+        )}
+
+        {showHint && (
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-blue-800"><strong>Hint:</strong> {word.hint}</p>
+          </div>
+        )}
+
+        {isGameWon() && (
+          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+            <p className="text-green-800">🎉 Congratulations! You guessed it!</p>
+          </div>
+        )}
+
+        {isGameLost() && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-800">😔 Game over! The word was: <strong>{word.word}</strong></p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-6 gap-2">
+          {alphabet.map(letter => (
+            <button
+              key={letter}
+              onClick={() => handleGuess(letter)}
+              disabled={guessedLetters.includes(letter) || isGameWon() || isGameLost()}
+              className={`p-2 rounded text-sm font-medium transition-colors ${
+                guessedLetters.includes(letter)
+                  ? word.word.includes(letter)
+                    ? 'bg-green-200 text-green-800'
+                    : 'bg-red-200 text-red-800'
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+              } ${(isGameWon() || isGameLost()) ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {letter}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const WordAssociationGame = ({ game }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [userGuesses, setUserGuesses] = useState([]);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const handleGuess = (guess) => {
+    if (guess.trim()) {
+      setUserGuesses([...userGuesses, guess.trim().toUpperCase()]);
+    }
+  };
+
+  const nextWord = () => {
+    if (currentIndex < game.associations.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+      setShowAnswer(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-500 rounded-2xl mb-4">
+          <Target className="w-8 h-8 text-white" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Word Association</h2>
+        <p className="text-gray-600 mt-1">What words come to mind?</p>
+      </div>
+
+      <div className="card">
+        <div className="text-center mb-6">
+          <div className="text-4xl font-bold text-primary-600 mb-4">
+            {game.start}
+          </div>
+          <p className="text-gray-600">What words do you associate with this?</p>
+        </div>
+
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Type a word that comes to mind..."
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                handleGuess(e.target.value);
+                e.target.value = '';
+              }
+            }}
+          />
+
+          {userGuesses.length > 0 && (
+            <div>
+              <h4 className="font-medium text-gray-900 mb-2">Your associations:</h4>
+              <div className="flex flex-wrap gap-2">
+                {userGuesses.map((guess, index) => (
+                  <span key={index} className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
+                    {guess}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={() => setShowAnswer(!showAnswer)}
+            className="w-full btn-secondary"
+          >
+            {showAnswer ? 'Hide' : 'Show'} Common Associations
+          </button>
+
+          {showAnswer && (
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <h4 className="font-medium text-gray-900 mb-2">Common associations:</h4>
+              <div className="flex flex-wrap gap-2">
+                {game.associations.map((word, index) => (
+                  <span key={index} className="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">
+                    {word}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const QuickGamesActivity = () => {
+  const [currentGame, setCurrentGame] = useState('color');
+  const [score, setScore] = useState(0);
+  const [gameActive, setGameActive] = useState(false);
+
+  const games = [
+    { id: 'color', name: 'Color Match', description: 'Match the color name with its color' },
+    { id: 'memory', name: 'Memory Sequence', description: 'Remember the sequence of numbers' },
+    { id: 'word', name: 'Quick Words', description: 'Type words that start with the given letter' },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-500 rounded-2xl mb-4">
+          <Zap className="w-8 h-8 text-white" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Quick Mind Games</h2>
+        <p className="text-gray-600 mt-1">Fast games to boost your mood</p>
+      </div>
+
+      <div className="card">
+        <div className="text-center mb-6">
+          <div className="text-2xl font-bold text-yellow-600 mb-2">Score: {score}</div>
+          <p className="text-gray-600">Choose a game to play!</p>
+        </div>
+
+        <div className="space-y-3">
+          {games.map(game => (
+            <button
+              key={game.id}
+              onClick={() => setCurrentGame(game.id)}
+              className={`w-full p-4 rounded-xl border-2 transition-all ${
+                currentGame === game.id
+                  ? 'border-yellow-500 bg-yellow-50'
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+            >
+              <h3 className="font-semibold text-gray-900">{game.name}</h3>
+              <p className="text-sm text-gray-600">{game.description}</p>
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-6 p-4 bg-yellow-50 rounded-lg text-center">
+          <p className="text-yellow-800 mb-3">Ready to play <strong>{games.find(g => g.id === currentGame)?.name}</strong>?</p>
+          <button
+            onClick={() => setGameActive(true)}
+            className="btn-primary"
+          >
+            Start Game
+          </button>
+        </div>
+
+        {gameActive && (
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg text-center">
+            <p className="text-gray-700 mb-2">Game in progress...</p>
+            <button
+              onClick={() => {
+                setGameActive(false);
+                setScore(score + Math.floor(Math.random() * 10) + 1);
+              }}
+              className="btn-secondary"
+            >
+              Finish Game
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

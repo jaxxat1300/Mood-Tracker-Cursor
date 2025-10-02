@@ -6,29 +6,60 @@ import { Smile, Frown, Heart, Zap, Cloud } from 'lucide-react';
 const Home = () => {
   const [userData, setUserData] = useState(null);
   const [moodEntries, setMoodEntries] = useState([]);
+  const [selectedMoods, setSelectedMoods] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showDailyQuestions, setShowDailyQuestions] = useState(false);
 
   useEffect(() => {
     const user = getUserData();
     const entries = getMoodEntries();
     setUserData(user);
     setMoodEntries(entries);
+    
+    // Check if daily questions should be shown
+    const today = new Date().toDateString();
+    const todaysEntry = entries.find(entry => 
+      new Date(entry.timestamp).toDateString() === today
+    );
+    if (!todaysEntry) {
+      setShowDailyQuestions(true);
+    }
   }, []);
 
   const moodOptions = [
-    { id: 'happy', label: 'Happy', icon: Smile, color: 'mood-happy', bgColor: 'bg-yellow-100' },
-    { id: 'calm', label: 'Calm', icon: Cloud, color: 'mood-calm', bgColor: 'bg-green-100' },
-    { id: 'stressed', label: 'Stressed', icon: Zap, color: 'mood-stressed', bgColor: 'bg-red-100' },
-    { id: 'sad', label: 'Sad', icon: Frown, color: 'mood-sad', bgColor: 'bg-blue-100' },
-    { id: 'angry', label: 'Angry', icon: Frown, color: 'mood-angry', bgColor: 'bg-red-200' },
-    { id: 'excited', label: 'Excited', icon: Heart, color: 'mood-excited', bgColor: 'bg-purple-100' },
+    { id: 'happy', label: 'Happy', icon: Smile, color: 'text-yellow-600', bgColor: 'bg-yellow-100' },
+    { id: 'calm', label: 'Calm', icon: Cloud, color: 'text-green-600', bgColor: 'bg-green-100' },
+    { id: 'stressed', label: 'Stressed', icon: Zap, color: 'text-red-600', bgColor: 'bg-red-100' },
+    { id: 'sad', label: 'Sad', icon: Frown, color: 'text-blue-600', bgColor: 'bg-blue-100' },
+    { id: 'angry', label: 'Angry', icon: Frown, color: 'text-red-700', bgColor: 'bg-red-200' },
+    { id: 'excited', label: 'Excited', icon: Heart, color: 'text-purple-600', bgColor: 'bg-purple-100' },
+    { id: 'anxious', label: 'Anxious', icon: Zap, color: 'text-orange-600', bgColor: 'bg-orange-100' },
+    { id: 'grateful', label: 'Grateful', icon: Heart, color: 'text-pink-600', bgColor: 'bg-pink-100' },
+    { id: 'tired', label: 'Tired', icon: Cloud, color: 'text-gray-600', bgColor: 'bg-gray-100' },
   ];
 
-  const handleMoodSelect = (moodId) => {
-    const newEntry = saveMoodEntry({ mood: moodId });
-    setMoodEntries(prev => [...prev, newEntry]);
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
+  const handleMoodToggle = (moodId) => {
+    setSelectedMoods(prev => {
+      if (prev.includes(moodId)) {
+        return prev.filter(id => id !== moodId);
+      } else {
+        return [...prev, moodId];
+      }
+    });
+  };
+
+  const handleSaveMoods = () => {
+    if (selectedMoods.length > 0) {
+      const newEntry = saveMoodEntry({ 
+        moods: selectedMoods,
+        intensity: selectedMoods.length 
+      });
+      setMoodEntries(prev => [...prev, newEntry]);
+      setSelectedMoods([]);
+      setShowSuccess(true);
+      setShowDailyQuestions(false);
+      setTimeout(() => setShowSuccess(false), 3000);
+    }
   };
 
   const getGreeting = () => {
@@ -52,6 +83,16 @@ const Home = () => {
       new Date(entry.timestamp).toDateString() === today
     );
   };
+
+  const dailyQuestions = [
+    "What's one thing you're grateful for today?",
+    "How did you sleep last night?",
+    "What's your energy level right now?",
+    "What's the best part of your day so far?",
+    "How are you feeling about tomorrow?",
+    "What made you smile today?",
+    "How stressed do you feel on a scale of 1-10?"
+  ];
 
   const todaysMood = getTodaysMood();
 
@@ -97,24 +138,82 @@ const Home = () => {
           </div>
         )}
 
-        {/* Mood check-in */}
+        {/* Daily Questions Modal */}
+        {showDailyQuestions && (
+          <div className="card border-2 border-primary-200 bg-primary-50">
+            <h2 className="text-lg font-semibold text-primary-900 mb-4">Daily Check-in Questions</h2>
+            <div className="space-y-3 mb-4">
+              {dailyQuestions.slice(0, 3).map((question, index) => (
+                <div key={index} className="bg-white p-3 rounded-lg">
+                  <p className="text-sm text-gray-700 mb-2">{question}</p>
+                  <input 
+                    type="text" 
+                    placeholder="Your answer..."
+                    className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                  />
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowDailyQuestions(false)}
+              className="w-full btn-primary text-sm py-2"
+            >
+              Continue to Mood Selection →
+            </button>
+          </div>
+        )}
+
+        {/* Multi-Mood Selection */}
         <div className="card">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Daily Check-in</h2>
-          <div className="grid grid-cols-3 gap-3">
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">How are you feeling?</h2>
+          <p className="text-sm text-gray-600 mb-4">Select all that apply - you can feel multiple things at once!</p>
+          
+          <div className="grid grid-cols-3 gap-2 mb-4">
             {moodOptions.map((mood) => {
               const Icon = mood.icon;
+              const isSelected = selectedMoods.includes(mood.id);
               return (
                 <button
                   key={mood.id}
-                  onClick={() => handleMoodSelect(mood.id)}
-                  className={`mood-button ${mood.bgColor} hover:scale-105 transition-transform duration-200`}
+                  onClick={() => handleMoodToggle(mood.id)}
+                  className={`mood-button ${mood.bgColor} transition-all duration-200 ${
+                    isSelected 
+                      ? 'ring-2 ring-primary-500 scale-105 shadow-md' 
+                      : 'hover:scale-105'
+                  }`}
                 >
-                  <Icon size={24} className={`text-${mood.color} mb-2`} />
-                  <span className="text-sm font-medium text-gray-700">{mood.label}</span>
+                  <Icon size={20} className={`${mood.color} mb-1`} />
+                  <span className="text-xs font-medium text-gray-700">{mood.label}</span>
+                  {isSelected && (
+                    <div className="absolute top-1 right-1 w-4 h-4 bg-primary-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs">✓</span>
+                    </div>
+                  )}
                 </button>
               );
             })}
           </div>
+
+          {selectedMoods.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex flex-wrap gap-2">
+                {selectedMoods.map(moodId => {
+                  const mood = moodOptions.find(m => m.id === moodId);
+                  return (
+                    <span key={moodId} className={`px-3 py-1 rounded-full text-sm ${mood.bgColor} ${mood.color}`}>
+                      {mood.label}
+                    </span>
+                  );
+                })}
+              </div>
+              <button
+                onClick={handleSaveMoods}
+                className="w-full btn-primary"
+              >
+                Save My Mood{selectedMoods.length > 1 ? 's' : ''} ({selectedMoods.length})
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Mood history chart */}
