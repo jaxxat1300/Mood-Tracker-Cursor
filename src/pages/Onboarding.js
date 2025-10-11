@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveUserData } from '../utils/storage';
-import { Heart, ArrowRight } from 'lucide-react';
+import { Heart, ArrowRight, Check } from 'lucide-react';
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -9,8 +9,8 @@ const Onboarding = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    usage: [], // Changed to array for multiple selections
-    customUsage: '', // Separate field for custom text
+    usage: [],
+    customUsage: '',
     importance: '',
   });
 
@@ -20,28 +20,32 @@ const Onboarding = () => {
 
   const toggleUsageOption = (option) => {
     setFormData(prev => {
-      const currentUsage = prev.usage;
-      if (currentUsage.includes(option)) {
-        // Remove if already selected
-        return { ...prev, usage: currentUsage.filter(item => item !== option) };
+      const currentUsage = [...prev.usage];
+      const index = currentUsage.indexOf(option);
+      
+      if (index > -1) {
+        currentUsage.splice(index, 1);
       } else {
-        // Add if not selected
-        return { ...prev, usage: [...currentUsage, option] };
+        currentUsage.push(option);
       }
+      
+      return { ...prev, usage: currentUsage };
     });
+  };
+
+  const isOptionSelected = (option) => {
+    return formData.usage.includes(option);
   };
 
   const handleNext = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      // Combine selected options and custom usage
       const finalUsage = [...formData.usage];
       if (formData.customUsage.trim()) {
         finalUsage.push(formData.customUsage.trim());
       }
 
-      // Save user data and navigate to home
       saveUserData({
         name: formData.name,
         email: formData.email,
@@ -49,18 +53,19 @@ const Onboarding = () => {
         importance: formData.importance,
         onboardedAt: new Date().toISOString(),
       });
-      navigate('/');
+      
+      window.location.href = '/';
     }
   };
 
   const canProceed = () => {
     switch (step) {
       case 1:
-        return formData.name.trim() && formData.email.trim();
+        return formData.name.trim().length > 0 && formData.email.trim().length > 0;
       case 2:
-        return formData.usage.length > 0 || formData.customUsage.trim();
+        return formData.usage.length > 0 || formData.customUsage.trim().length > 0;
       case 3:
-        return formData.importance.trim();
+        return formData.importance.trim().length > 0;
       default:
         return false;
     }
@@ -77,7 +82,6 @@ const Onboarding = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 px-4 py-8">
       <div className="max-w-md mx-auto">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-500 rounded-2xl mb-4">
             <Heart className="w-8 h-8 text-white" />
@@ -86,7 +90,6 @@ const Onboarding = () => {
           <p className="text-gray-600">Your personal mood tracking companion</p>
         </div>
 
-        {/* Progress indicator */}
         <div className="flex justify-center mb-8">
           <div className="flex space-x-2">
             {[1, 2, 3].map((i) => (
@@ -100,7 +103,6 @@ const Onboarding = () => {
           </div>
         </div>
 
-        {/* Step 1: Basic Info */}
         {step === 1 && (
           <div className="card">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Let's get to know you</h2>
@@ -133,30 +135,33 @@ const Onboarding = () => {
           </div>
         )}
 
-        {/* Step 2: Usage - NOW WITH MULTI-SELECT */}
         {step === 2 && (
           <div className="card">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
               How do you want to use this app?
             </h2>
-            <p className="text-sm text-gray-600 mb-6">Select all that apply</p>
+            <p className="text-sm text-gray-600 mb-6">Select all that apply ✨</p>
             <div className="space-y-3">
-              {usageOptions.map((option) => (
-                <button
-                  key={option}
-                  onClick={() => toggleUsageOption(option)}
-                  className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-center justify-between ${
-                    formData.usage.includes(option)
-                      ? 'border-primary-500 bg-primary-50 text-primary-700'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <span>{option}</span>
-                  {formData.usage.includes(option) && (
-                    <span className="text-primary-500 font-bold">✓</span>
-                  )}
-                </button>
-              ))}
+              {usageOptions.map((option) => {
+                const selected = isOptionSelected(option);
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => toggleUsageOption(option)}
+                    className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-center justify-between ${
+                      selected
+                        ? 'border-primary-500 bg-primary-50 text-primary-700'
+                        : 'border-gray-200 hover:border-primary-300 hover:bg-gray-50'
+                    }`}
+                  >
+                    <span className="font-medium">{option}</span>
+                    {selected && (
+                      <Check className="w-5 h-5 text-primary-600 flex-shrink-0" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
             <div className="mt-4">
               <input
@@ -164,13 +169,17 @@ const Onboarding = () => {
                 value={formData.customUsage}
                 onChange={(e) => handleInputChange('customUsage', e.target.value)}
                 className="input-field"
-                placeholder="Or write your own..."
+                placeholder="Or write your own reason..."
               />
             </div>
+            {formData.usage.length > 0 && (
+              <p className="mt-4 text-sm text-primary-600 font-medium">
+                ✓ {formData.usage.length} option{formData.usage.length !== 1 ? 's' : ''} selected
+              </p>
+            )}
           </div>
         )}
 
-        {/* Step 3: Importance */}
         {step === 3 && (
           <div className="card">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">
@@ -185,11 +194,10 @@ const Onboarding = () => {
           </div>
         )}
 
-        {/* Continue button */}
         <button
           onClick={handleNext}
           disabled={!canProceed()}
-          className={`w-full flex items-center justify-center space-x-2 mt-8 ${
+          className={`w-full flex items-center justify-center space-x-2 mt-8 transition-all ${
             canProceed()
               ? 'btn-primary'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed py-3 px-6 rounded-xl'
