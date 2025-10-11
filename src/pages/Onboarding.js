@@ -9,7 +9,8 @@ const Onboarding = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    usage: '',
+    usage: [], // Changed to array for multiple selections
+    customUsage: '', // Separate field for custom text
     importance: '',
   });
 
@@ -17,13 +18,35 @@ const Onboarding = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const toggleUsageOption = (option) => {
+    setFormData(prev => {
+      const currentUsage = prev.usage;
+      if (currentUsage.includes(option)) {
+        // Remove if already selected
+        return { ...prev, usage: currentUsage.filter(item => item !== option) };
+      } else {
+        // Add if not selected
+        return { ...prev, usage: [...currentUsage, option] };
+      }
+    });
+  };
+
   const handleNext = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
+      // Combine selected options and custom usage
+      const finalUsage = [...formData.usage];
+      if (formData.customUsage.trim()) {
+        finalUsage.push(formData.customUsage.trim());
+      }
+
       // Save user data and navigate to home
       saveUserData({
-        ...formData,
+        name: formData.name,
+        email: formData.email,
+        usage: finalUsage,
+        importance: formData.importance,
         onboardedAt: new Date().toISOString(),
       });
       navigate('/');
@@ -35,7 +58,7 @@ const Onboarding = () => {
       case 1:
         return formData.name.trim() && formData.email.trim();
       case 2:
-        return formData.usage.trim();
+        return formData.usage.length > 0 || formData.customUsage.trim();
       case 3:
         return formData.importance.trim();
       default:
@@ -110,32 +133,36 @@ const Onboarding = () => {
           </div>
         )}
 
-        {/* Step 2: Usage */}
+        {/* Step 2: Usage - NOW WITH MULTI-SELECT */}
         {step === 2 && (
           <div className="card">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
               How do you want to use this app?
             </h2>
+            <p className="text-sm text-gray-600 mb-6">Select all that apply</p>
             <div className="space-y-3">
               {usageOptions.map((option) => (
                 <button
                   key={option}
-                  onClick={() => handleInputChange('usage', option)}
-                  className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 ${
-                    formData.usage === option
+                  onClick={() => toggleUsageOption(option)}
+                  className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-center justify-between ${
+                    formData.usage.includes(option)
                       ? 'border-primary-500 bg-primary-50 text-primary-700'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  {option}
+                  <span>{option}</span>
+                  {formData.usage.includes(option) && (
+                    <span className="text-primary-500 font-bold">✓</span>
+                  )}
                 </button>
               ))}
             </div>
             <div className="mt-4">
               <input
                 type="text"
-                value={formData.usage.startsWith('Track') || formData.usage.startsWith('Understand') || formData.usage.startsWith('Improve') || formData.usage.startsWith('Share') || formData.usage.startsWith('Personal') ? '' : formData.usage}
-                onChange={(e) => handleInputChange('usage', e.target.value)}
+                value={formData.customUsage}
+                onChange={(e) => handleInputChange('customUsage', e.target.value)}
                 className="input-field"
                 placeholder="Or write your own..."
               />
