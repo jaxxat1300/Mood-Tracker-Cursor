@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { isUserOnboarded } from './utils/storage';
 import Layout from './components/Layout';
@@ -10,7 +10,24 @@ import Activities from './pages/Activities';
 import Profile from './pages/Profile';
 
 function App() {
-  const userOnboarded = isUserOnboarded();
+  const [userOnboarded, setUserOnboarded] = useState(isUserOnboarded());
+
+  // Listen for storage changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setUserOnboarded(isUserOnboarded());
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check periodically (for same-tab updates)
+    const interval = setInterval(handleStorageChange, 100);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <Router>
@@ -38,16 +55,4 @@ function App() {
           />
           <Route 
             path="/profile" 
-            element={userOnboarded ? <Profile /> : <Navigate to="/onboarding" replace />} 
-          />
-          <Route 
-            path="*" 
-            element={<Navigate to={userOnboarded ? "/" : "/onboarding"} replace />} 
-          />
-        </Routes>
-      </Layout>
-    </Router>
-  );
-}
-
-export default App;
+            element={userOnboarded ? <Profile /> : <Navigate to="/onboarding" replace />}
