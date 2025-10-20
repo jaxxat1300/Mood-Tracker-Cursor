@@ -10,6 +10,8 @@ export const STORAGE_KEYS = {
 // User data functions
 export const saveUserData = (userData) => {
   localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
+  // Dispatch custom event to notify components of user data update
+  window.dispatchEvent(new CustomEvent('userDataUpdated'));
 };
 
 export const getUserData = () => {

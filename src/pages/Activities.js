@@ -416,7 +416,7 @@ const HangmanGame = ({ word }) => {
 };
 
 const WordAssociationGame = ({ game }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [currentIndex, setCurrentIndex] = useState(0);
   const [userGuesses, setUserGuesses] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
 
@@ -426,12 +426,12 @@ const WordAssociationGame = ({ game }) => {
     }
   };
 
-  const nextWord = () => {
-    if (currentIndex < game.associations.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setShowAnswer(false);
-    }
-  };
+  // const nextWord = () => {
+  //   if (currentIndex < game.associations.length - 1) {
+  //     setCurrentIndex(currentIndex + 1);
+  //     setShowAnswer(false);
+  //   }
+  // };
 
   return (
     <div className="space-y-6">
