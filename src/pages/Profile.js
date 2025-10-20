@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getUserData, getProfileData, saveProfileData } from '../utils/storage';
-import { Plus, X, Edit3, Save, User } from 'lucide-react';
+import { getUserData, getProfileData, saveProfileData, resetApp } from '../utils/storage';
+import { Plus, X, Edit3, Save, User, RotateCcw } from 'lucide-react';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -205,6 +205,26 @@ const Profile = () => {
             <li>• Add social activities: "Call a friend"</li>
             <li>• Remember self-care: "Take a warm bath"</li>
           </ul>
+        </div>
+
+        {/* Reset App Button for Testing */}
+        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+          <h3 className="font-medium text-red-800 mb-3">🔄 Testing & Development</h3>
+          <p className="text-sm text-red-700 mb-4">
+            Use this button to reset the app and clear all stored data. This will take you back to the onboarding screen.
+          </p>
+          <button
+            onClick={() => {
+              if (window.confirm('Are you sure you want to reset the app? This will clear all your data and take you back to onboarding.')) {
+                resetApp();
+                window.location.reload();
+              }
+            }}
+            className="btn-secondary text-red-700 border-red-300 hover:bg-red-50 flex items-center space-x-2"
+          >
+            <RotateCcw size={16} />
+            <span>Reset App (Clear All Data)</span>
+          </button>
         </div>
       </div>
     </div>

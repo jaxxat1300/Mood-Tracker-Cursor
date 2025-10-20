@@ -85,3 +85,15 @@ export const isUserOnboarded = () => {
   const userData = getUserData();
   return userData && userData.name && userData.email;
 };
+
+// Development/Testing helper functions
+export const resetApp = () => {
+  clearAllData();
+  window.dispatchEvent(new CustomEvent('userDataUpdated'));
+  console.log('App reset - all data cleared. Refresh the page to see onboarding.');
+};
+
+// Make resetApp available globally for easy testing
+if (typeof window !== 'undefined') {
+  window.resetApp = resetApp;
+}
