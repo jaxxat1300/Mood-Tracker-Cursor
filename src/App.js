@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { isUserOnboarded } from './utils/storage';
+import { isUserOnboarded, clearDataOnStart } from './utils/storage';
 import Layout from './components/Layout';
 import Onboarding from './pages/Onboarding';
 import Home from './pages/Home';
@@ -14,6 +14,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Clear all data on app start for fresh experience
+    clearDataOnStart();
+    
     // Check onboarding status on mount and when storage changes
     const checkOnboardingStatus = () => {
       setUserOnboarded(isUserOnboarded());

@@ -86,6 +86,12 @@ export const isUserOnboarded = () => {
   return userData && userData.name && userData.email;
 };
 
+// Clear all data when app starts (for fresh start each time)
+export const clearDataOnStart = () => {
+  clearAllData();
+  console.log('App started fresh - all previous data cleared');
+};
+
 // Development/Testing helper functions
 export const resetApp = () => {
   clearAllData();
