@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Mood-Tracker-Cursor/static/css/main.f0aa8da8.css",
+    "main.js": "/Mood-Tracker-Cursor/static/js/main.368052f3.js",
+    "index.html": "/Mood-Tracker-Cursor/index.html",
+    "main.f0aa8da8.css.map": "/Mood-Tracker-Cursor/static/css/main.f0aa8da8.css.map",
+    "main.368052f3.js.map": "/Mood-Tracker-Cursor/static/js/main.368052f3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f0aa8da8.css",
+    "static/js/main.368052f3.js"
+  ]
+}
