@@ -3,8 +3,30 @@ import { Sparkles, Puzzle, BookOpen, Wind, ArrowLeft, Gamepad2, Target, Zap } fr
 
 const Activities = () => {
   const [selectedActivity, setSelectedActivity] = useState(null);
+  const [activeTab, setActiveTab] = useState('recommended'); // recommended or puzzles
 
-  const activities = [
+  // Recommended activities
+  const recommendedActivities = [
+    {
+      id: 'breathing',
+      title: 'Breathing Exercise',
+      description: 'Calm your mind with guided breathing',
+      icon: Wind,
+      color: 'bg-green-100',
+      textColor: 'text-green-600',
+    },
+    {
+      id: 'journal-prompt',
+      title: 'Journal Prompts',
+      description: 'Creative and engaging writing prompts',
+      icon: BookOpen,
+      color: 'bg-blue-100',
+      textColor: 'text-blue-600',
+    },
+  ];
+
+  // Puzzle library
+  const puzzleActivities = [
     {
       id: 'puzzle',
       title: 'Daily Riddles',
@@ -28,22 +50,6 @@ const Activities = () => {
       icon: Target,
       color: 'bg-pink-100',
       textColor: 'text-pink-600',
-    },
-    {
-      id: 'journal-prompt',
-      title: 'Fun Journal Prompts',
-      description: 'Creative and engaging writing prompts',
-      icon: BookOpen,
-      color: 'bg-blue-100',
-      textColor: 'text-blue-600',
-    },
-    {
-      id: 'breathing',
-      title: 'Breathing Exercise',
-      description: 'Calm your mind with guided breathing',
-      icon: Wind,
-      color: 'bg-green-100',
-      textColor: 'text-green-600',
     },
     {
       id: 'quick-games',
@@ -181,25 +187,49 @@ const Activities = () => {
           <p className="text-text-secondary mt-1">Boost your mood with mindful activities</p>
         </div>
 
+        {/* Tab Menu */}
+        <div className="flex gap-2 bg-white rounded-modern-lg p-1 shadow-sm border border-border">
+          <button
+            onClick={() => setActiveTab('recommended')}
+            className={`flex-1 py-3 px-4 rounded-modern text-sm font-medium transition-all duration-200 ${
+              activeTab === 'recommended'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-text-secondary hover:text-text-primary'
+            }`}
+          >
+            Recommended for You
+          </button>
+          <button
+            onClick={() => setActiveTab('puzzles')}
+            className={`flex-1 py-3 px-4 rounded-modern text-sm font-medium transition-all duration-200 ${
+              activeTab === 'puzzles'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-text-secondary hover:text-text-primary'
+            }`}
+          >
+            Puzzle Library
+          </button>
+        </div>
+
         {/* Activity cards */}
         <div className="space-y-4">
-          {activities.map((activity) => {
+          {(activeTab === 'recommended' ? recommendedActivities : puzzleActivities).map((activity) => {
             const Icon = activity.icon;
             return (
               <button
                 key={activity.id}
                 onClick={() => setSelectedActivity(activity.id)}
-                className="w-full card hover:shadow-md transition-all duration-200 text-left"
+                className="w-full card hover:shadow-modern-hover transition-all duration-200 text-left"
               >
                 <div className="flex items-center space-x-4">
-                  <div className={`p-3 rounded-xl ${activity.color}`}>
+                  <div className={`p-3 rounded-modern ${activity.color}`}>
                     <Icon size={24} className={activity.textColor} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">{activity.title}</h3>
-                    <p className="text-sm text-gray-600">{activity.description}</p>
+                    <h3 className="font-semibold text-text-primary">{activity.title}</h3>
+                    <p className="text-sm text-text-secondary">{activity.description}</p>
                   </div>
-                  <div className="text-gray-400">
+                  <div className="text-text-secondary">
                     <ArrowLeft size={20} className="rotate-180" />
                   </div>
                 </div>
@@ -208,16 +238,28 @@ const Activities = () => {
           })}
         </div>
 
-        {/* Tips */}
-        <div className="card bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
-          <h3 className="font-medium text-text-primary mb-3">Activity Tips</h3>
-          <ul className="text-sm text-text-secondary space-y-2">
-            <li>• Take your time - there's no rush</li>
-            <li>• Find a quiet, comfortable space</li>
-            <li>• Try different activities to see what works for you</li>
-            <li>• Use these when you need a mental break</li>
-          </ul>
-        </div>
+        {/* Context-specific tips */}
+        {activeTab === 'recommended' ? (
+          <div className="card bg-gradient-to-br from-green-50 to-blue-50 border-green-200">
+            <h3 className="font-medium text-text-primary mb-3">✨ Recommended for Your Wellness</h3>
+            <ul className="text-sm text-text-secondary space-y-2">
+              <li>• These activities help reduce stress and anxiety</li>
+              <li>• Practice regularly for best results</li>
+              <li>• Find a quiet, comfortable space</li>
+              <li>• Use when you need emotional grounding</li>
+            </ul>
+          </div>
+        ) : (
+          <div className="card bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+            <h3 className="font-medium text-text-primary mb-3">🎮 Puzzle Library Tips</h3>
+            <ul className="text-sm text-text-secondary space-y-2">
+              <li>• Games help distract from anxious thoughts</li>
+              <li>• Take your time - there's no rush</li>
+              <li>• Try different puzzles to find your favorites</li>
+              <li>• Perfect for a mental break</li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
