@@ -85,7 +85,7 @@ export const clearAllData = () => {
 
 export const isUserOnboarded = () => {
   const userData = getUserData();
-  return userData && userData.name && userData.email;
+  return userData && userData.onboardedAt;
 };
 
 // Clear all data when app starts (for fresh start each time)

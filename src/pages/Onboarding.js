@@ -21,10 +21,13 @@ const Onboarding = () => {
       setStep(step + 1);
     } else {
       // Save user data and navigate to home
-      saveUserData({
-        ...formData,
+      const userData = {
+        name: formData.name || 'User',
+        notifications: formData.notifications,
+        checkInTime: formData.checkInTime,
         onboardedAt: new Date().toISOString(),
-      });
+      };
+      saveUserData(userData);
       navigate('/');
     }
   };
@@ -33,12 +36,13 @@ const Onboarding = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      saveUserData({
-        name: 'User',
+      const userData = {
+        name: formData.name || 'User',
         notifications: false,
         checkInTime: '09:00',
         onboardedAt: new Date().toISOString(),
-      });
+      };
+      saveUserData(userData);
       navigate('/');
     }
   };
