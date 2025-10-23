@@ -15,7 +15,7 @@ const BottomNavigation = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border px-2 py-2 shadow-lg z-40">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sage-200 px-2 py-3 shadow-spa-xl z-40">
       <div className="flex justify-around items-center max-w-3xl mx-auto">
         {navItems.map(({ path, icon: Icon, label }) => {
           const isActive = location.pathname === path;
@@ -23,14 +23,14 @@ const BottomNavigation = () => {
             <button
               key={path}
               onClick={() => navigate(path)}
-              className={`flex flex-col items-center py-2 px-3 rounded-modern transition-all duration-200 ${
+              className={`flex flex-col items-center py-2 px-4 rounded-spa transition-all duration-300 ${
                 isActive
-                  ? 'text-accent-600 bg-accent-50'
-                  : 'text-text-secondary hover:text-text-primary'
+                  ? 'text-primary-600 bg-gradient-to-br from-primary-50 to-mint-50'
+                  : 'text-sage-500 hover:text-sage-900 hover:bg-sage-50'
               }`}
             >
-              <Icon size={20} className="mb-1" />
-              <span className="text-xs font-medium">
+              <Icon size={22} className="mb-1" strokeWidth={isActive ? 2.5 : 2} />
+              <span className={`text-xs font-semibold ${isActive ? 'text-primary-600' : ''}`}>
                 {label}
               </span>
             </button>

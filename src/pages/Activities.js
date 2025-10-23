@@ -176,35 +176,39 @@ const Activities = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6 pb-24">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="min-h-screen px-4 py-8 pb-28 relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-mint-200/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
+      
+      <div className="max-w-2xl mx-auto space-y-8 relative z-10">
         {/* Header */}
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-modern-lg mb-4">
-            <Sparkles className="w-8 h-8 text-white" />
+        <div className="text-center fade-in">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full shadow-spa-xl mb-6 float">
+            <Sparkles className="w-10 h-10 text-white" strokeWidth={1.5} />
           </div>
-          <h1 className="text-2xl font-semibold text-text-primary">Activities</h1>
-          <p className="text-text-secondary mt-1">Boost your mood with mindful activities</p>
+          <h1 className="text-4xl font-serif font-bold text-sage-900 mb-3 tracking-tight">Wellness Activities</h1>
+          <p className="text-xl text-sage-600 font-light">Tools for your mindful journey</p>
         </div>
 
         {/* Tab Menu */}
-        <div className="flex gap-2 bg-white rounded-modern-lg p-1 shadow-sm border border-border">
+        <div className="flex gap-2 bg-white/90 backdrop-blur-sm rounded-spa-lg p-1.5 shadow-spa border border-sage-200">
           <button
             onClick={() => setActiveTab('recommended')}
-            className={`flex-1 py-3 px-4 rounded-modern text-sm font-medium transition-all duration-200 ${
+            className={`flex-1 py-4 px-4 rounded-spa text-sm font-semibold transition-all duration-300 ${
               activeTab === 'recommended'
-                ? 'bg-purple-600 text-white shadow-sm'
-                : 'text-text-secondary hover:text-text-primary'
+                ? 'bg-gradient-to-r from-primary-600 to-mint-600 text-white shadow-spa'
+                : 'text-sage-600 hover:text-sage-900 hover:bg-sage-50'
             }`}
           >
             Recommended for You
           </button>
           <button
             onClick={() => setActiveTab('puzzles')}
-            className={`flex-1 py-3 px-4 rounded-modern text-sm font-medium transition-all duration-200 ${
+            className={`flex-1 py-4 px-4 rounded-spa text-sm font-semibold transition-all duration-300 ${
               activeTab === 'puzzles'
-                ? 'bg-purple-600 text-white shadow-sm'
-                : 'text-text-secondary hover:text-text-primary'
+                ? 'bg-gradient-to-r from-primary-600 to-mint-600 text-white shadow-spa'
+                : 'text-sage-600 hover:text-sage-900 hover:bg-sage-50'
             }`}
           >
             Puzzle Library
@@ -213,23 +217,24 @@ const Activities = () => {
 
         {/* Activity cards */}
         <div className="space-y-4">
-          {(activeTab === 'recommended' ? recommendedActivities : puzzleActivities).map((activity) => {
+          {(activeTab === 'recommended' ? recommendedActivities : puzzleActivities).map((activity, index) => {
             const Icon = activity.icon;
             return (
               <button
                 key={activity.id}
                 onClick={() => setSelectedActivity(activity.id)}
-                className="w-full card hover:shadow-modern-hover transition-all duration-200 text-left"
+                className="w-full card hover:border-primary-300 hover:shadow-spa-lg transition-all duration-300 text-left group"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="flex items-center space-x-4">
-                  <div className={`p-3 rounded-modern ${activity.color}`}>
-                    <Icon size={24} className={activity.textColor} />
+                  <div className={`p-4 rounded-spa ${activity.color} group-hover:scale-110 transition-transform duration-300 shadow-spa`}>
+                    <Icon size={28} className={activity.textColor} strokeWidth={1.5} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-text-primary">{activity.title}</h3>
-                    <p className="text-sm text-text-secondary">{activity.description}</p>
+                    <h3 className="font-semibold text-sage-900 mb-1">{activity.title}</h3>
+                    <p className="text-sm text-sage-600">{activity.description}</p>
                   </div>
-                  <div className="text-text-secondary">
+                  <div className="text-sage-400 group-hover:text-primary-600 transition-colors">
                     <ArrowLeft size={20} className="rotate-180" />
                   </div>
                 </div>
@@ -240,9 +245,9 @@ const Activities = () => {
 
         {/* Context-specific tips */}
         {activeTab === 'recommended' ? (
-          <div className="card bg-gradient-to-br from-green-50 to-blue-50 border-green-200">
-            <h3 className="font-medium text-text-primary mb-3">✨ Recommended for Your Wellness</h3>
-            <ul className="text-sm text-text-secondary space-y-2">
+          <div className="card bg-gradient-to-br from-primary-50 to-mint-50 border-primary-200">
+            <h3 className="font-serif text-xl font-semibold text-sage-900 mb-3">✨ Recommended for Your Wellness</h3>
+            <ul className="text-sm text-sage-600 space-y-2 leading-relaxed">
               <li>• These activities help reduce stress and anxiety</li>
               <li>• Practice regularly for best results</li>
               <li>• Find a quiet, comfortable space</li>
@@ -250,9 +255,9 @@ const Activities = () => {
             </ul>
           </div>
         ) : (
-          <div className="card bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
-            <h3 className="font-medium text-text-primary mb-3">🎮 Puzzle Library Tips</h3>
-            <ul className="text-sm text-text-secondary space-y-2">
+          <div className="card bg-gradient-to-br from-mint-50 to-primary-50 border-mint-200">
+            <h3 className="font-serif text-xl font-semibold text-sage-900 mb-3">🎮 Puzzle Library Tips</h3>
+            <ul className="text-sm text-sage-600 space-y-2 leading-relaxed">
               <li>• Games help distract from anxious thoughts</li>
               <li>• Take your time - there's no rush</li>
               <li>• Try different puzzles to find your favorites</li>

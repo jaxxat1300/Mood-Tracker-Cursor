@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Play, Trash2, X, Music } from 'lucide-react';
+import { Plus, Play, Trash2, X, Music, Sparkles } from 'lucide-react';
 import { getMediaLibrary, saveVideo, deleteVideo, updateVideoPlayCount } from '../utils/storage';
 
 const Sanctuary = () => {
@@ -84,21 +84,25 @@ const Sanctuary = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6 pb-24">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="min-h-screen px-4 py-8 pb-28 relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-mint-200/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+      
+      <div className="max-w-4xl mx-auto space-y-8 relative z-10">
         {/* Header */}
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-600 rounded-modern-lg mb-4">
-            <Music className="w-8 h-8 text-white" />
+        <div className="text-center fade-in">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full shadow-spa-xl mb-6 float">
+            <Music className="w-10 h-10 text-white" strokeWidth={1.5} />
           </div>
-          <h1 className="text-2xl font-semibold text-text-primary">My Sanctuary</h1>
-          <p className="text-text-secondary mt-1">Your personal comfort content library</p>
+          <h1 className="text-4xl font-serif font-bold text-sage-900 mb-3 tracking-tight">My Sanctuary</h1>
+          <p className="text-xl text-sage-600 font-light">Your personal comfort content library</p>
         </div>
 
         {/* Add Content Button */}
         <button
           onClick={() => setShowAddModal(true)}
-          className="w-full btn-primary flex items-center justify-center space-x-2"
+          className="w-full btn-primary flex items-center justify-center space-x-2 shadow-spa-lg"
         >
           <Plus size={20} />
           <span>Add Content</span>
@@ -108,10 +112,10 @@ const Sanctuary = () => {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setFilterCategory('all')}
-            className={`px-4 py-2 rounded-modern text-sm font-medium transition-all duration-200 ${
+            className={`px-6 py-3 rounded-spa text-sm font-semibold transition-all duration-300 ${
               filterCategory === 'all'
-                ? 'bg-accent-600 text-white'
-                : 'bg-white border border-border text-text-primary hover:border-accent-600'
+                ? 'bg-gradient-to-r from-primary-600 to-mint-600 text-white shadow-spa'
+                : 'bg-white border-2 border-sage-200 text-sage-600 hover:bg-sage-50'
             }`}
           >
             All
@@ -120,10 +124,10 @@ const Sanctuary = () => {
             <button
               key={cat.id}
               onClick={() => setFilterCategory(cat.id)}
-              className={`px-4 py-2 rounded-modern text-sm font-medium transition-all duration-200 ${
+              className={`px-6 py-3 rounded-spa text-sm font-semibold transition-all duration-300 ${
                 filterCategory === cat.id
-                  ? 'bg-accent-600 text-white'
-                  : 'bg-white border border-border text-text-primary hover:border-accent-600'
+                  ? 'bg-gradient-to-r from-primary-600 to-mint-600 text-white shadow-spa'
+                  : 'bg-white border-2 border-sage-200 text-sage-600 hover:bg-sage-50'
               }`}
             >
               {cat.icon} {cat.name}

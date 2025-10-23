@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, MessageCircle, ExternalLink, Plus, Trash2, X, Heart, Shield, Users } from 'lucide-react';
+import { Phone, MessageCircle, ExternalLink, Plus, Trash2, X, Heart, Shield, Users, Sparkles } from 'lucide-react';
 import { getSupportContacts, saveSupportContact, deleteSupportContact } from '../utils/storage';
 
 const Support = () => {
@@ -94,17 +94,22 @@ const Support = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6 pb-24">
-      <div className="max-w-3xl mx-auto space-y-6">
-        {/* Quick Exit Button */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-text-primary">Support & Resources</h1>
-            <p className="text-text-secondary text-sm">You're not alone</p>
+    <div className="min-h-screen px-4 py-8 pb-28 relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-mint-200/20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
+      
+      <div className="max-w-3xl mx-auto space-y-8 relative z-10">
+        {/* Header with Quick Exit */}
+        <div className="text-center fade-in">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full shadow-spa-xl mb-6 float">
+            <Heart className="w-10 h-10 text-white" strokeWidth={1.5} />
           </div>
+          <h1 className="text-4xl font-serif font-bold text-sage-900 mb-3 tracking-tight">Support & Resources</h1>
+          <p className="text-xl text-sage-600 font-light mb-4">You're not alone</p>
           <button
             onClick={() => setShowQuickExit(true)}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-text-primary text-sm font-medium rounded-modern transition-all duration-200"
+            className="px-6 py-2 bg-white hover:bg-sage-50 text-sage-700 text-sm font-semibold rounded-spa border-2 border-sage-300 transition-all duration-300 shadow-spa"
           >
             Quick Exit
           </button>
