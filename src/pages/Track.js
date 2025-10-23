@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveMoodEntry } from '../utils/storage';
-import { Check, X, Phone, Heart } from 'lucide-react';
+import { Check, Phone, Heart } from 'lucide-react';
 
 const Track = () => {
   const navigate = useNavigate();
