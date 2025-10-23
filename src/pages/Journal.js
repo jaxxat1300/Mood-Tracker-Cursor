@@ -85,15 +85,15 @@ const Journal = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 py-6">
-      <div className="max-w-md mx-auto space-y-6">
+    <div className="min-h-screen bg-background px-4 py-6 pb-24">
+      <div className="max-w-2xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary-500 rounded-2xl mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-600 rounded-modern-lg mb-4">
             <BookOpen className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Journal</h1>
-          <p className="text-gray-600 mt-1">Capture your thoughts and reflections</p>
+          <h1 className="text-2xl font-semibold text-text-primary">Journal</h1>
+          <p className="text-text-secondary mt-1">Capture your thoughts and reflections</p>
         </div>
 
         {/* Action buttons */}
@@ -116,18 +116,18 @@ const Journal = () => {
 
         {/* Fun prompt modal */}
         {showPrompts && (
-          <div className="card border-2 border-accent-200 bg-accent-50">
+          <div className="card border-accent-200 bg-accent-50">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-accent-900">✨ Fun Writing Prompt</h2>
+              <h2 className="text-lg font-semibold text-text-primary">Writing Prompt</h2>
               <button
                 onClick={() => getRandomPrompt()}
-                className="p-2 text-accent-600 hover:bg-accent-100 rounded-lg transition-colors"
+                className="p-2 text-accent-600 hover:bg-accent-100 rounded-modern transition-colors"
               >
                 <Shuffle size={20} />
               </button>
             </div>
-            <div className="bg-white p-4 rounded-lg mb-4">
-              <p className="text-gray-700 leading-relaxed italic">"{currentPrompt}"</p>
+            <div className="bg-white p-4 rounded-modern mb-4">
+              <p className="text-text-primary leading-relaxed italic">"{currentPrompt}"</p>
             </div>
             <div className="flex space-x-3">
               <button
@@ -195,10 +195,10 @@ const Journal = () => {
         {/* Entries list */}
         <div className="space-y-4">
           {entries.length === 0 ? (
-            <div className="card text-center py-8">
-              <BookOpen className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No entries yet</h3>
-              <p className="text-gray-600 mb-4">Start journaling to capture your thoughts and feelings</p>
+            <div className="card text-center py-12">
+              <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-text-primary mb-2">No entries yet</h3>
+              <p className="text-text-secondary mb-6">Start journaling to capture your thoughts and feelings</p>
               <button
                 onClick={() => setShowNewEntry(true)}
                 className="btn-primary"
@@ -211,8 +211,8 @@ const Journal = () => {
               <div key={entry.id} className="card">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 mb-1">{entry.title}</h3>
-                    <div className="flex items-center text-sm text-gray-500 space-x-2">
+                    <h3 className="font-semibold text-text-primary mb-1">{entry.title}</h3>
+                    <div className="flex items-center text-sm text-text-secondary space-x-2">
                       <Calendar size={14} />
                       <span>{formatDate(entry.timestamp)}</span>
                       <span>•</span>
@@ -221,12 +221,12 @@ const Journal = () => {
                   </div>
                   <button
                     onClick={() => handleDeleteEntry(entry.id)}
-                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                    className="p-2 text-text-secondary hover:text-danger hover:bg-red-50 rounded-modern transition-colors duration-200"
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                <p className="text-text-primary leading-relaxed whitespace-pre-wrap">
                   {entry.content}
                 </p>
               </div>
@@ -238,27 +238,27 @@ const Journal = () => {
         {entries.length > 0 && (
           <div className="grid grid-cols-2 gap-4">
             <div className="card text-center">
-              <div className="text-2xl font-bold text-secondary-600 mb-1">{entries.length}</div>
-              <div className="text-sm text-gray-600">Total Entries</div>
+              <div className="text-3xl font-semibold text-accent-600 mb-1">{entries.length}</div>
+              <div className="text-sm text-text-secondary">Total Entries</div>
             </div>
             <div className="card text-center">
-              <div className="text-2xl font-bold text-accent-600 mb-1">
+              <div className="text-3xl font-semibold text-success mb-1">
                 {Math.ceil(entries.length / 7)}
               </div>
-              <div className="text-sm text-gray-600">Weeks Journaling</div>
+              <div className="text-sm text-text-secondary">Weeks Journaling</div>
             </div>
           </div>
         )}
 
         {/* Fun journaling tips */}
-        <div className="bg-gradient-to-r from-accent-50 to-secondary-50 border border-accent-200 rounded-xl p-4">
-          <h3 className="font-medium text-accent-800 mb-2">💡 Make Journaling Fun!</h3>
-          <ul className="text-sm text-accent-700 space-y-1">
-            <li>• Try writing with your non-dominant hand</li>
-            <li>• Use different colors for different moods</li>
-            <li>• Draw doodles or add emojis to your entries</li>
+        <div className="card bg-gradient-to-br from-accent-50 to-purple-50 border-accent-200">
+          <h3 className="font-medium text-text-primary mb-3">Journaling Tips</h3>
+          <ul className="text-sm text-text-secondary space-y-2">
+            <li>• Write freely without judgment</li>
+            <li>• Use prompts when you're stuck</li>
+            <li>• Draw or add doodles to express yourself</li>
             <li>• Write letters to your future or past self</li>
-            <li>• Create lists: favorites, goals, dreams</li>
+            <li>• Track gratitude and accomplishments</li>
           </ul>
         </div>
       </div>

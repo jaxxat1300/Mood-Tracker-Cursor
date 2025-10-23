@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,18 +6,16 @@
 
 @layer base {
   html {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', 'SF Pro', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
   }
   
   body {
     margin: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
+    font-family: 'Inter', 'SF Pro', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    color: #334155;
+    background: #F8F9FA;
+    color: #2C3E50;
     line-height: 1.6;
   }
 
@@ -27,78 +25,89 @@
 }
 
 @layer components {
+  /* Modern Flat Buttons - NOT bubbly */
   .btn-primary {
-    @apply bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium py-4 px-8 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 border-0;
+    @apply bg-accent-600 hover:bg-accent-700 text-white font-medium py-3 px-6 rounded-modern transition-all duration-200 border-0;
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: scale(1.01);
   }
   
   .btn-secondary {
-    @apply bg-white hover:bg-slate-50 text-slate-700 font-medium py-4 px-8 rounded-2xl border border-slate-200 transition-all duration-300 shadow-sm hover:shadow-md;
+    @apply bg-white hover:bg-gray-50 text-text-primary font-medium py-3 px-6 rounded-modern border border-border transition-all duration-200;
   }
 
-  .btn-soft {
-    @apply bg-gradient-to-r from-slate-100 to-slate-50 hover:from-slate-200 hover:to-slate-100 text-slate-700 font-medium py-3 px-6 rounded-xl transition-all duration-200 border border-slate-200/50;
+  .btn-secondary:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-danger {
+    @apply bg-danger hover:bg-red-600 text-white font-medium py-3 px-6 rounded-modern transition-all duration-200 border-0;
   }
   
+  /* Modern Cards - Clean, not bubbly */
   .card {
-    @apply bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-white/20 p-8 transition-all duration-300 hover:shadow-md;
+    @apply bg-surface rounded-modern-lg shadow-modern border border-border p-5 transition-all duration-200;
+  }
+
+  .card:hover {
+    @apply shadow-modern-hover;
   }
 
   .card-minimal {
-    @apply bg-white/60 backdrop-blur-sm rounded-2xl shadow-sm border border-white/30 p-6;
+    @apply bg-surface rounded-modern border border-border p-4;
   }
   
+  /* Modern Input Fields */
   .input-field {
-    @apply w-full px-5 py-4 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 outline-none transition-all duration-300 bg-white/80 backdrop-blur-sm placeholder:text-slate-400 text-slate-700;
+    @apply w-full px-4 py-3 border border-border rounded-modern focus:ring-2 focus:ring-accent-600/20 focus:border-accent-600 outline-none transition-all duration-200 bg-white placeholder:text-text-secondary text-text-primary;
   }
 
   .input-field:focus {
-    @apply shadow-lg shadow-blue-500/10;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
   }
   
+  /* Mood selection - modern, not bubbly */
   .mood-button {
-    @apply flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-transparent transition-all duration-300 hover:scale-105 cursor-pointer bg-white/60 backdrop-blur-sm hover:bg-white/80;
+    @apply flex flex-col items-center justify-center p-4 rounded-modern border border-border transition-all duration-200 cursor-pointer bg-white hover:border-accent-600;
   }
   
   .mood-button.active {
-    @apply border-blue-400 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-lg shadow-blue-500/20;
+    @apply border-accent-600 bg-accent-50;
   }
 
+  /* Typography */
   .text-gradient {
-    @apply bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent;
+    @apply text-text-primary;
   }
 
   .text-soft {
-    @apply text-slate-600;
+    @apply text-text-secondary;
   }
 
-  .glass-effect {
-    @apply bg-white/10 backdrop-blur-md border border-white/20;
-  }
-
-  .breathing-animation {
-    animation: breathe 4s ease-in-out infinite;
-  }
-
-  @keyframes breathe {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-
+  /* Animations - Minimal, not bouncy */
   .fade-in {
-    animation: fadeIn 0.6s ease-out;
+    animation: fadeIn 0.2s ease-out;
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   .slide-up {
-    animation: slideUp 0.5s ease-out;
+    animation: slideUp 0.2s ease-out;
   }
 
   @keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Crisis banner - always visible */
+  .crisis-banner {
+    @apply bg-red-50 border-l-4 border-danger p-4 rounded-modern;
   }
 }

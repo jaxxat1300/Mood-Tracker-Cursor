@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveUserData } from '../utils/storage';
-import { Heart, ArrowRight, Sparkles, User, Mail } from 'lucide-react';
+import { Heart, ArrowRight, Bell } from 'lucide-react';
 
 const Onboarding = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
-    usage: '',
-    importance: '',
+    notifications: false,
+    checkInTime: '09:00',
   });
 
   const handleInputChange = (field, value) => {
@@ -30,69 +29,119 @@ const Onboarding = () => {
     }
   };
 
-  const canProceed = () => {
-    switch (step) {
-      case 1:
-        return formData.name.trim() && formData.email.trim();
-      case 2:
-        return formData.usage.trim();
-      case 3:
-        return formData.importance.trim();
-      default:
-        return false;
+  const handleSkip = () => {
+    if (step < 3) {
+      setStep(step + 1);
+    } else {
+      saveUserData({
+        name: 'User',
+        notifications: false,
+        checkInTime: '09:00',
+        onboardedAt: new Date().toISOString(),
+      });
+      navigate('/');
     }
   };
 
-  const usageOptions = [
-    { text: "Track my daily emotions", emoji: "📊" },
-    { text: "Understand my mood patterns", emoji: "🧠" },
-    { text: "Improve my mental wellness", emoji: "🌱" },
-    { text: "Share with my therapist", emoji: "💬" },
-    { text: "Personal reflection", emoji: "✨" },
-  ];
+  const canProceed = () => {
+    if (step === 1) return true; // Can always proceed from welcome
+    if (step === 2) return true; // Can always proceed from purpose
+    if (step === 3) return true; // Can always proceed from setup (optional fields)
+    return false;
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 px-4 py-8">
-      <div className="max-w-lg mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12 fade-in">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl mb-6 breathing-animation shadow-lg shadow-blue-500/25">
-            <Heart className="w-10 h-10 text-white" />
-          </div>
-          <h1 className="text-4xl font-bold text-gradient mb-3">Welcome to MoodFlow</h1>
-          <p className="text-soft text-lg">Your gentle companion for emotional wellness</p>
-        </div>
-
+    <div className="min-h-screen bg-background px-4 py-8">
+      <div className="max-w-md mx-auto">
         {/* Progress indicator */}
-        <div className="flex justify-center mb-12">
-          <div className="flex space-x-3">
+        <div className="flex justify-center mb-8">
+          <div className="flex space-x-2">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                className={`h-1 w-12 rounded-full transition-all duration-200 ${
                   i <= step 
-                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30' 
-                    : 'bg-slate-200'
+                    ? 'bg-accent-600' 
+                    : 'bg-gray-200'
                 }`}
               />
             ))}
           </div>
         </div>
 
-        {/* Step 1: Basic Info */}
+        {/* Step 1: Welcome */}
         {step === 1 && (
+          <div className="text-center fade-in">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-accent-600 rounded-modern-lg mb-6">
+              <Heart className="w-10 h-10 text-white" />
+            </div>
+            <h1 className="text-4xl font-semibold text-text-primary mb-3">MoodFlow</h1>
+            <p className="text-xl text-text-secondary mb-12">Your companion for emotional clarity</p>
+            
+            <div className="mb-8">
+              <div className="inline-block p-1 bg-accent-50 rounded-modern">
+                <svg className="w-32 h-32 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Step 2: Purpose */}
+        {step === 2 && (
           <div className="card slide-up">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl mb-4">
-                <User className="w-8 h-8 text-blue-600" />
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-50 rounded-modern mb-4">
+                <svg className="w-8 h-8 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
               </div>
-              <h2 className="text-2xl font-semibold text-gradient mb-2">Let's get to know you</h2>
-              <p className="text-soft">We'd love to learn a little about you</p>
+              <h2 className="text-2xl font-semibold text-text-primary mb-3">Track, Understand, Navigate</h2>
+              <p className="text-text-secondary text-sm mb-6">Here's what you can do:</p>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-modern">
+                <div className="flex-shrink-0 w-6 h-6 bg-accent-600 rounded-full flex items-center justify-center mt-0.5">
+                  <span className="text-white text-xs font-semibold">✓</span>
+                </div>
+                <div>
+                  <p className="font-medium text-text-primary">Log your emotions with depth</p>
+                  <p className="text-sm text-text-secondary">Track feelings with nuance and context</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-modern">
+                <div className="flex-shrink-0 w-6 h-6 bg-accent-600 rounded-full flex items-center justify-center mt-0.5">
+                  <span className="text-white text-xs font-semibold">✓</span>
+                </div>
+                <div>
+                  <p className="font-medium text-text-primary">Discover patterns over time</p>
+                  <p className="text-sm text-text-secondary">See insights in your emotional journey</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-modern">
+                <div className="flex-shrink-0 w-6 h-6 bg-accent-600 rounded-full flex items-center justify-center mt-0.5">
+                  <span className="text-white text-xs font-semibold">✓</span>
+                </div>
+                <div>
+                  <p className="font-medium text-text-primary">Access support when needed</p>
+                  <p className="text-sm text-text-secondary">Find resources and comfort content</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Quick Setup */}
+        {step === 3 && (
+          <div className="card slide-up">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-semibold text-text-primary mb-2">Let's personalize your experience</h2>
+              <p className="text-text-secondary text-sm">All fields are optional</p>
             </div>
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-3 flex items-center">
-                  <span className="mr-2">👋</span>
+                <label className="block text-sm font-medium text-text-primary mb-2">
                   What should we call you?
                 </label>
                 <input
@@ -100,114 +149,62 @@ const Onboarding = () => {
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   className="input-field"
-                  placeholder="Your name"
+                  placeholder="Your name (optional)"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-3 flex items-center">
-                  <Mail className="w-4 h-4 mr-2 text-slate-500" />
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className="input-field"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Usage */}
-        {step === 2 && (
-          <div className="card slide-up">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl mb-4">
-                <Sparkles className="w-8 h-8 text-green-600" />
-              </div>
-              <h2 className="text-2xl font-semibold text-gradient mb-2">What brings you here?</h2>
-              <p className="text-soft">Choose what resonates with you most</p>
-            </div>
-            <div className="space-y-3">
-              {usageOptions.map((option) => (
-                <button
-                  key={option.text}
-                  onClick={() => handleInputChange('usage', option.text)}
-                  className={`w-full text-left p-5 rounded-2xl border-2 transition-all duration-300 ${
-                    formData.usage === option.text
-                      ? 'border-blue-400 bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-700 shadow-lg shadow-blue-500/20'
-                      : 'border-slate-200 hover:border-slate-300 hover:bg-white/80'
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <span className="text-2xl mr-4">{option.emoji}</span>
-                    <span className="font-medium">{option.text}</span>
+              
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-modern">
+                <div className="flex items-center space-x-3">
+                  <Bell className="w-5 h-5 text-text-secondary" />
+                  <div>
+                    <p className="font-medium text-text-primary text-sm">Daily check-in reminders</p>
+                    <p className="text-xs text-text-secondary">Get a gentle nudge</p>
                   </div>
-                </button>
-              ))}
-            </div>
-            <div className="mt-6">
-              <p className="text-sm text-soft mb-3">Or share something personal:</p>
-              <input
-                type="text"
-                value={usageOptions.some(opt => opt.text === formData.usage) ? '' : formData.usage}
-                onChange={(e) => handleInputChange('usage', e.target.value)}
-                className="input-field"
-                placeholder="Tell us in your own words..."
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Step 3: Importance */}
-        {step === 3 && (
-          <div className="card slide-up">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-100 to-violet-100 rounded-2xl mb-4">
-                <Heart className="w-8 h-8 text-purple-600" />
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.notifications}
+                    onChange={(e) => handleInputChange('notifications', e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent-600"></div>
+                </label>
               </div>
-              <h2 className="text-2xl font-semibold text-gradient mb-2">Almost there!</h2>
-              <p className="text-soft">Share what this journey means to you</p>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-4">
-                <span className="mr-2">💭</span>
-                Why is emotional wellness important to you?
-              </label>
-              <textarea
-                value={formData.importance}
-                onChange={(e) => handleInputChange('importance', e.target.value)}
-                className="input-field h-32 resize-none"
-                placeholder="Take your time... there's no right or wrong answer. We're here to support you on your journey."
-              />
+
+              {formData.notifications && (
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    Best time for daily check-in
+                  </label>
+                  <input
+                    type="time"
+                    value={formData.checkInTime}
+                    onChange={(e) => handleInputChange('checkInTime', e.target.value)}
+                    className="input-field"
+                  />
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {/* Continue button */}
-        <div className="mt-10">
+        {/* Navigation buttons */}
+        <div className="mt-8 space-y-3">
           <button
             onClick={handleNext}
-            disabled={!canProceed()}
-            className={`w-full flex items-center justify-center space-x-3 py-4 px-8 rounded-2xl font-medium transition-all duration-300 ${
-              canProceed()
-                ? 'btn-primary shadow-lg hover:shadow-xl'
-                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-            }`}
+            className="w-full btn-primary flex items-center justify-center space-x-2 py-4"
           >
-            <span className="text-lg">
-              {step === 3 ? 'Begin Your Journey' : 'Continue'}
-            </span>
-            {canProceed() && <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />}
+            <span>{step === 3 ? 'Start Tracking' : step === 1 ? 'Get Started' : 'Continue'}</span>
+            <ArrowRight size={18} />
           </button>
           
-          {step === 3 && (
-            <p className="text-center text-sm text-soft mt-4">
-              ✨ Your personal wellness journey starts here
-            </p>
-          )}
+          <button
+            onClick={handleSkip}
+            className="w-full text-text-secondary text-sm hover:text-text-primary transition-colors duration-200"
+          >
+            Skip
+          </button>
         </div>
       </div>
     </div>

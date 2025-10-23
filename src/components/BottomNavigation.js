@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, BookOpen, User, Sparkles, StickyNote } from 'lucide-react';
+import { Home, Edit3, Music, TrendingUp, Heart } from 'lucide-react';
 
 const BottomNavigation = () => {
   const navigate = useNavigate();
@@ -8,33 +8,29 @@ const BottomNavigation = () => {
 
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
-    { path: '/journal', icon: BookOpen, label: 'Journal' },
-    { path: '/notes', icon: StickyNote, label: 'Notes' },
-    { path: '/activities', icon: Sparkles, label: 'Activities' },
-    { path: '/profile', icon: User, label: 'Profile' },
+    { path: '/track', icon: Edit3, label: 'Track' },
+    { path: '/sanctuary', icon: Music, label: 'Sanctuary' },
+    { path: '/insights', icon: TrendingUp, label: 'Insights' },
+    { path: '/support', icon: Heart, label: 'Support' },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-white/20 px-4 py-3 safe-area-inset-bottom shadow-lg shadow-slate-200/50">
-      <div className="flex justify-around items-center max-w-lg mx-auto">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border px-2 py-2 shadow-lg z-40">
+      <div className="flex justify-around items-center max-w-3xl mx-auto">
         {navItems.map(({ path, icon: Icon, label }) => {
           const isActive = location.pathname === path;
           return (
             <button
               key={path}
               onClick={() => navigate(path)}
-              className={`flex flex-col items-center py-3 px-4 rounded-2xl transition-all duration-300 group ${
+              className={`flex flex-col items-center py-2 px-3 rounded-modern transition-all duration-200 ${
                 isActive
-                  ? 'text-blue-600 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-lg shadow-blue-500/20'
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/80'
+                  ? 'text-accent-600 bg-accent-50'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
-              <div className={`transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`}>
-                <Icon size={22} className="mb-1" />
-              </div>
-              <span className={`text-xs font-medium transition-all duration-300 ${
-                isActive ? 'text-blue-600' : 'text-slate-500'
-              }`}>
+              <Icon size={20} className="mb-1" />
+              <span className="text-xs font-medium">
                 {label}
               </span>
             </button>

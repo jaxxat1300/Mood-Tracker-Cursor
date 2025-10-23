@@ -170,15 +170,15 @@ const Activities = () => {
   }
 
   return (
-    <div className="min-h-screen px-4 py-6">
-      <div className="max-w-md mx-auto space-y-6">
+    <div className="min-h-screen bg-background px-4 py-6 pb-24">
+      <div className="max-w-2xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-accent-500 rounded-2xl mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-modern-lg mb-4">
             <Sparkles className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Activities</h1>
-          <p className="text-gray-600 mt-1">Boost your mood with mindful activities</p>
+          <h1 className="text-2xl font-semibold text-text-primary">Activities</h1>
+          <p className="text-text-secondary mt-1">Boost your mood with mindful activities</p>
         </div>
 
         {/* Activity cards */}
@@ -209,9 +209,9 @@ const Activities = () => {
         </div>
 
         {/* Tips */}
-        <div className="bg-accent-50 border border-accent-200 rounded-xl p-4">
-          <h3 className="font-medium text-accent-800 mb-2">💡 Activity Tips</h3>
-          <ul className="text-sm text-accent-700 space-y-1">
+        <div className="card bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+          <h3 className="font-medium text-text-primary mb-3">Activity Tips</h3>
+          <ul className="text-sm text-text-secondary space-y-2">
             <li>• Take your time - there's no rush</li>
             <li>• Find a quiet, comfortable space</li>
             <li>• Try different activities to see what works for you</li>

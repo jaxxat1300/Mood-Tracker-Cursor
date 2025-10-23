@@ -7,8 +7,8 @@ const Layout = ({ children }) => {
   const hideNavigation = location.pathname === '/onboarding';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
-      <main className={`${hideNavigation ? 'pb-0' : 'pb-24'}`}>
+    <div className="min-h-screen bg-background">
+      <main className={`${hideNavigation ? 'pb-0' : 'pb-20'}`}>
         {children}
       </main>
       {!hideNavigation && <BottomNavigation />}

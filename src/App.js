@@ -4,10 +4,12 @@ import { isUserOnboarded, clearDataOnStart } from './utils/storage';
 import Layout from './components/Layout';
 import Onboarding from './pages/Onboarding';
 import Home from './pages/Home';
+import Track from './pages/Track';
+import Sanctuary from './pages/Sanctuary';
+import Insights from './pages/Insights';
+import Support from './pages/Support';
 import Journal from './pages/Journal';
-import Notes from './pages/Notes';
 import Activities from './pages/Activities';
-import Profile from './pages/Profile';
 
 function App() {
   const [userOnboarded, setUserOnboarded] = useState(false);
@@ -50,10 +52,10 @@ function App() {
   // Show loading spinner while checking authentication status
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
-          <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div>
-          <p className="text-slate-600 text-sm">Loading...</p>
+          <div className="w-12 h-12 border-4 border-gray-200 border-t-accent-600 rounded-full animate-spin"></div>
+          <p className="text-text-secondary text-sm">Loading...</p>
         </div>
       </div>
     );
@@ -72,20 +74,28 @@ function App() {
             element={userOnboarded ? <Home /> : <Navigate to="/onboarding" replace />} 
           />
           <Route 
+            path="/track" 
+            element={userOnboarded ? <Track /> : <Navigate to="/onboarding" replace />} 
+          />
+          <Route 
+            path="/sanctuary" 
+            element={userOnboarded ? <Sanctuary /> : <Navigate to="/onboarding" replace />} 
+          />
+          <Route 
+            path="/insights" 
+            element={userOnboarded ? <Insights /> : <Navigate to="/onboarding" replace />} 
+          />
+          <Route 
+            path="/support" 
+            element={userOnboarded ? <Support /> : <Navigate to="/onboarding" replace />} 
+          />
+          <Route 
             path="/journal" 
             element={userOnboarded ? <Journal /> : <Navigate to="/onboarding" replace />} 
           />
           <Route 
-            path="/notes" 
-            element={userOnboarded ? <Notes /> : <Navigate to="/onboarding" replace />} 
-          />
-          <Route 
             path="/activities" 
             element={userOnboarded ? <Activities /> : <Navigate to="/onboarding" replace />} 
-          />
-          <Route 
-            path="/profile" 
-            element={userOnboarded ? <Profile /> : <Navigate to="/onboarding" replace />} 
           />
           <Route 
             path="*" 

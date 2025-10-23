@@ -5,6 +5,8 @@ export const STORAGE_KEYS = {
   MOOD_ENTRIES: 'moodflow_mood_entries',
   JOURNAL_ENTRIES: 'moodflow_journal_entries',
   PROFILE_DATA: 'moodflow_profile_data',
+  MEDIA_LIBRARY: 'moodflow_media_library',
+  SUPPORT_CONTACTS: 'moodflow_support_contacts',
 };
 
 // User data functions
@@ -103,3 +105,83 @@ export const resetApp = () => {
 if (typeof window !== 'undefined') {
   window.resetApp = resetApp;
 }
+
+// Media Library functions
+export const saveVideo = (video) => {
+  const library = getMediaLibrary();
+  const newVideo = {
+    ...video,
+    id: Date.now().toString(),
+    addedDate: new Date().toISOString(),
+    playCount: 0,
+  };
+  library.videos.push(newVideo);
+  localStorage.setItem(STORAGE_KEYS.MEDIA_LIBRARY, JSON.stringify(library));
+  return newVideo;
+};
+
+export const getMediaLibrary = () => {
+  const data = localStorage.getItem(STORAGE_KEYS.MEDIA_LIBRARY);
+  return data ? JSON.parse(data) : {
+    videos: [],
+    categories: [
+      { id: 'focus', name: 'Focus & Productivity', icon: '🎵' },
+      { id: 'meditation', name: 'Meditation & Calm', icon: '🧘' },
+      { id: 'comfort', name: 'Comfort Content', icon: '😌' },
+      { id: 'motivation', name: 'Motivation', icon: '💪' },
+      { id: 'sleep', name: 'Sleep Sounds', icon: '😴' },
+    ]
+  };
+};
+
+export const deleteVideo = (videoId) => {
+  const library = getMediaLibrary();
+  library.videos = library.videos.filter(v => v.id !== videoId);
+  localStorage.setItem(STORAGE_KEYS.MEDIA_LIBRARY, JSON.stringify(library));
+};
+
+export const updateVideoPlayCount = (videoId) => {
+  const library = getMediaLibrary();
+  const video = library.videos.find(v => v.id === videoId);
+  if (video) {
+    video.playCount = (video.playCount || 0) + 1;
+    localStorage.setItem(STORAGE_KEYS.MEDIA_LIBRARY, JSON.stringify(library));
+  }
+};
+
+// Support Contacts functions
+export const saveSupportContact = (contact) => {
+  const contacts = getSupportContacts();
+  const newContact = {
+    ...contact,
+    id: Date.now().toString(),
+  };
+  contacts.personalContacts.push(newContact);
+  localStorage.setItem(STORAGE_KEYS.SUPPORT_CONTACTS, JSON.stringify(contacts));
+  return newContact;
+};
+
+export const getSupportContacts = () => {
+  const data = localStorage.getItem(STORAGE_KEYS.SUPPORT_CONTACTS);
+  return data ? JSON.parse(data) : {
+    personalContacts: [],
+    favoriteResources: []
+  };
+};
+
+export const deleteSupportContact = (contactId) => {
+  const contacts = getSupportContacts();
+  contacts.personalContacts = contacts.personalContacts.filter(c => c.id !== contactId);
+  localStorage.setItem(STORAGE_KEYS.SUPPORT_CONTACTS, JSON.stringify(contacts));
+};
+
+export const toggleFavoriteResource = (resourceId) => {
+  const contacts = getSupportContacts();
+  if (contacts.favoriteResources.includes(resourceId)) {
+    contacts.favoriteResources = contacts.favoriteResources.filter(id => id !== resourceId);
+  } else {
+    contacts.favoriteResources.push(resourceId);
+  }
+  localStorage.setItem(STORAGE_KEYS.SUPPORT_CONTACTS, JSON.stringify(contacts));
+  return contacts.favoriteResources;
+};
