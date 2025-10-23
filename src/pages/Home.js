@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserData, getMoodEntries } from '../utils/storage';
-import { Edit3, TrendingUp, Music, Heart, Calendar, Flame, Phone, AlertCircle } from 'lucide-react';
+import { Edit3, TrendingUp, Music, Heart, Calendar, Flame, AlertCircle, Phone, Sparkles } from 'lucide-react';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -55,72 +55,78 @@ const Home = () => {
   const quickActions = [
     { 
       title: 'Track Mood', 
-      description: 'Log how you\'re feeling',
+      description: 'Log your feelings',
       icon: Edit3, 
-      color: 'bg-accent-50 text-accent-600',
+      gradient: 'from-primary-500 to-mint-500',
       path: '/track'
     },
     { 
       title: 'View Insights', 
       description: 'See your patterns',
       icon: TrendingUp, 
-      color: 'bg-purple-50 text-purple-600',
+      gradient: 'from-mint-500 to-primary-400',
       path: '/insights'
     },
     { 
       title: 'Sanctuary', 
       description: 'Comfort content',
       icon: Music, 
-      color: 'bg-green-50 text-green-600',
+      gradient: 'from-primary-400 to-sage-500',
       path: '/sanctuary'
     },
     { 
       title: 'Support', 
-      description: 'Get help & resources',
+      description: 'Get resources',
       icon: Heart, 
-      color: 'bg-red-50 text-red-600',
+      gradient: 'from-sage-500 to-primary-500',
       path: '/support'
     },
   ];
 
   return (
-    <div className="min-h-screen px-4 py-8 pb-24">
-      <div className="max-w-2xl mx-auto space-y-8">
+    <div className="min-h-screen px-4 py-8 pb-28 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-mint-200/20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
+      
+      <div className="max-w-2xl mx-auto space-y-8 relative z-10">
         {/* Welcome Header */}
-        <div className="fade-in text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full shadow-spa-lg mb-4 float">
-            <Heart className="w-8 h-8 text-white" />
+        <div className="text-center fade-in">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full shadow-spa-xl mb-6 float">
+            <Sparkles className="w-10 h-10 text-white" strokeWidth={1.5} />
           </div>
-          <h1 className="text-4xl font-serif font-bold text-sage-900 mb-3 tracking-tight">
-            {getGreeting()}{userData?.name ? `, ${userData.name}` : ''}
+          <h1 className="text-5xl font-serif font-bold text-sage-900 mb-3 tracking-tight">
+            {getGreeting()}{userData?.name && userData.name !== 'Friend' ? `, ${userData.name}` : ''}
           </h1>
-          <p className="text-lg text-sage-600">How is your heart today?</p>
+          <p className="text-xl text-sage-600 font-light">How is your heart today?</p>
         </div>
 
-        {/* Crisis Resources - Always Visible */}
-        <div className="crisis-banner">
-          <div className="flex items-start space-x-3">
-            <AlertCircle className="w-6 h-6 text-danger flex-shrink-0 mt-0.5" />
+        {/* Crisis Resources - Elegant Banner */}
+        <div className="card border-red-200 bg-gradient-to-br from-red-50/80 to-rose-50/80 backdrop-blur-sm">
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0 w-12 h-12 bg-danger rounded-full flex items-center justify-center shadow-spa">
+              <AlertCircle className="w-6 h-6 text-white" />
+            </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-danger mb-2">Need immediate help?</h3>
-              <p className="text-sm text-text-primary mb-3">Crisis support is available 24/7. You're not alone.</p>
+              <h3 className="font-semibold text-sage-900 mb-2">Need immediate support?</h3>
+              <p className="text-sm text-sage-600 mb-4">Crisis support available 24/7. You're not alone.</p>
               <div className="flex flex-wrap gap-2">
                 <a 
                   href="tel:988" 
-                  className="inline-flex items-center space-x-2 bg-danger hover:bg-red-600 text-white text-sm font-medium py-2 px-4 rounded-modern transition-all duration-200"
+                  className="inline-flex items-center space-x-2 bg-danger hover:bg-red-600 text-white text-sm font-medium py-2 px-4 rounded-spa transition-all duration-300 shadow-spa"
                 >
                   <Phone size={16} />
                   <span>Call 988</span>
                 </a>
                 <a 
                   href="sms:988" 
-                  className="inline-flex items-center space-x-2 bg-white hover:bg-gray-50 text-danger border border-danger text-sm font-medium py-2 px-4 rounded-modern transition-all duration-200"
+                  className="inline-flex items-center space-x-2 bg-white hover:bg-gray-50 text-danger border-2 border-danger text-sm font-medium py-2 px-4 rounded-spa transition-all duration-300"
                 >
                   <span>Text 988</span>
                 </a>
                 <button
                   onClick={() => navigate('/support')}
-                  className="inline-flex items-center space-x-2 bg-white hover:bg-gray-50 text-text-primary border border-border text-sm font-medium py-2 px-4 rounded-modern transition-all duration-200"
+                  className="inline-flex items-center space-x-2 bg-white hover:bg-sage-50 text-sage-700 border-2 border-sage-300 text-sm font-medium py-2 px-4 rounded-spa transition-all duration-300"
                 >
                   <Heart size={16} />
                   <span>More Resources</span>
@@ -131,34 +137,34 @@ const Home = () => {
         </div>
 
         {/* Today's Check-in Status */}
-        <div className="card slide-up">
+        <div className="card hover:border-primary-300">
           {todaysMood ? (
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-success rounded-modern flex items-center justify-center">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full flex items-center justify-center shadow-spa">
                   <span className="text-2xl">✓</span>
                 </div>
                 <div>
-                  <p className="font-semibold text-text-primary">Today's mood logged</p>
-                  <p className="text-sm text-text-secondary capitalize">
+                  <h3 className="font-semibold text-sage-900 mb-1">Today's mood logged</h3>
+                  <p className="text-sm text-sage-600 capitalize">
                     Feeling {todaysMood.emotion || todaysMood.mood} at {new Date(todaysMood.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => navigate('/track')}
-                className="text-sm text-accent-600 hover:text-accent-700 font-medium"
+                className="text-sm text-primary-600 hover:text-primary-700 font-semibold transition-colors"
               >
                 Update
               </button>
             </div>
           ) : (
-            <div className="text-center py-6">
-              <div className="w-16 h-16 bg-accent-50 rounded-modern flex items-center justify-center mx-auto mb-4">
-                <Edit3 className="w-8 h-8 text-accent-600" />
+            <div className="text-center py-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-100 to-mint-100 rounded-full shadow-spa mb-4">
+                <Edit3 className="w-8 h-8 text-primary-600" strokeWidth={1.5} />
               </div>
-              <h3 className="font-semibold text-text-primary mb-2">Ready to check in?</h3>
-              <p className="text-sm text-text-secondary mb-4">Take a moment to track your mood</p>
+              <h3 className="font-serif text-2xl font-semibold text-sage-900 mb-2">Ready to check in?</h3>
+              <p className="text-sage-600 mb-6">Take a moment to reflect on your emotions</p>
               <button
                 onClick={() => navigate('/track')}
                 className="btn-primary"
@@ -171,35 +177,40 @@ const Home = () => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="card text-center">
-            <Flame className="w-8 h-8 text-warning mx-auto mb-2" />
-            <p className="text-3xl font-semibold text-text-primary">{streak}</p>
-            <p className="text-sm text-text-secondary">Day Streak</p>
+          <div className="card text-center group hover:border-primary-300">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-400 to-red-400 rounded-full shadow-spa mb-3 group-hover:scale-110 transition-transform duration-300">
+              <Flame className="w-7 h-7 text-white" />
+            </div>
+            <p className="text-4xl font-serif font-bold text-sage-900 mb-1">{streak}</p>
+            <p className="text-sm text-sage-600">Day Streak</p>
           </div>
-          <div className="card text-center">
-            <Calendar className="w-8 h-8 text-accent-600 mx-auto mb-2" />
-            <p className="text-3xl font-semibold text-text-primary">{moodEntries.length}</p>
-            <p className="text-sm text-text-secondary">Total Entries</p>
+          <div className="card text-center group hover:border-primary-300">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full shadow-spa mb-3 group-hover:scale-110 transition-transform duration-300">
+              <Calendar className="w-7 h-7 text-white" />
+            </div>
+            <p className="text-4xl font-serif font-bold text-sage-900 mb-1">{moodEntries.length}</p>
+            <p className="text-sm text-sage-600">Total Entries</p>
           </div>
         </div>
 
         {/* Quick Actions */}
         <div>
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Quick Actions</h2>
+          <h2 className="text-2xl font-serif font-bold text-sage-900 mb-6 text-center">Your Wellness Tools</h2>
           <div className="grid grid-cols-2 gap-4">
-            {quickActions.map((action) => {
+            {quickActions.map((action, index) => {
               const Icon = action.icon;
               return (
                 <button
                   key={action.title}
                   onClick={() => navigate(action.path)}
-                  className="card text-left hover:shadow-modern-hover transition-all duration-200 group"
+                  className="card text-center group hover:border-primary-300"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className={`w-10 h-10 ${action.color} rounded-modern flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200`}>
-                    <Icon size={20} />
+                  <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br ${action.gradient} rounded-full shadow-spa mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className="w-7 h-7 text-white" strokeWidth={1.5} />
                   </div>
-                  <h3 className="font-semibold text-text-primary text-sm mb-1">{action.title}</h3>
-                  <p className="text-xs text-text-secondary">{action.description}</p>
+                  <h3 className="font-semibold text-sage-900 mb-1">{action.title}</h3>
+                  <p className="text-xs text-sage-600">{action.description}</p>
                 </button>
               );
             })}
@@ -210,36 +221,39 @@ const Home = () => {
         {moodEntries.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-text-primary">Recent Check-ins</h2>
+              <h2 className="text-2xl font-serif font-bold text-sage-900">Recent Check-ins</h2>
               <button
                 onClick={() => navigate('/insights')}
-                className="text-sm text-accent-600 hover:text-accent-700 font-medium"
+                className="text-sm text-primary-600 hover:text-primary-700 font-semibold transition-colors"
               >
-                View All
+                View All →
               </button>
             </div>
             <div className="space-y-3">
               {moodEntries.slice(-3).reverse().map((entry) => (
-                <div key={entry.id} className="card-minimal">
+                <div key={entry.id} className="card-minimal hover:border-primary-300 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <p className="font-medium text-text-primary capitalize text-sm">
+                      <p className="font-semibold text-sage-900 capitalize text-sm">
                         {entry.emotion || entry.mood || 'Mood logged'}
                       </p>
-                      <p className="text-xs text-text-secondary">
-                        {new Date(entry.timestamp).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })} at {new Date(entry.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      <p className="text-xs text-sage-600 mt-1">
+                        {new Date(entry.timestamp).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })} · {new Date(entry.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
                     {entry.intensity && (
                       <div className="text-right">
-                        <p className="text-xs text-text-secondary">Intensity</p>
-                        <p className="text-sm font-semibold text-accent-600">{entry.intensity}/10</p>
+                        <div className="inline-flex items-center gap-1">
+                          <div className={`w-2 h-2 rounded-full ${
+                            entry.intensity >= 8 ? 'bg-red-500' : 
+                            entry.intensity >= 5 ? 'bg-yellow-500' : 
+                            'bg-green-500'
+                          }`}></div>
+                          <span className="text-sm font-semibold text-sage-900">{entry.intensity}/10</span>
+                        </div>
                       </div>
                     )}
                   </div>
-                  {entry.note && (
-                    <p className="text-xs text-text-secondary mt-2 line-clamp-2">{entry.note}</p>
-                  )}
                 </div>
               ))}
             </div>
@@ -247,11 +261,14 @@ const Home = () => {
         )}
 
         {/* Motivational Quote */}
-        <div className="card bg-gradient-to-br from-accent-50 to-purple-50 border-accent-200">
-          <p className="text-sm text-text-primary italic mb-2">
+        <div className="card bg-gradient-to-br from-primary-50 to-mint-50 border-primary-200 text-center">
+          <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full shadow-spa mb-4">
+            <Heart className="w-5 h-5 text-white" />
+          </div>
+          <p className="text-lg text-sage-800 italic mb-3 font-light leading-relaxed">
             "Your feelings are valid. Taking time to understand them is a strength, not a weakness."
           </p>
-          <p className="text-xs text-text-secondary text-right">— MoodFlow</p>
+          <p className="text-sm text-sage-600 font-medium">— Your Wellness Journey</p>
         </div>
       </div>
     </div>

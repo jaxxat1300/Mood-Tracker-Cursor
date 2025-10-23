@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveMoodEntry } from '../utils/storage';
-import { Check, Phone, Heart } from 'lucide-react';
+import { Check, Phone, Heart, Sparkles } from 'lucide-react';
 
 const Track = () => {
   const navigate = useNavigate();
@@ -94,22 +94,29 @@ const Track = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6 pb-24">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="min-h-screen px-4 py-8 pb-28 relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-mint-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+      
+      <div className="max-w-2xl mx-auto space-y-8 relative z-10">
         {/* Header */}
-        <div className="text-center">
-          <h1 className="text-2xl font-semibold text-text-primary">Track Your Mood</h1>
-          <p className="text-text-secondary mt-1">How are you feeling right now?</p>
+        <div className="text-center fade-in">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-mint-500 to-primary-500 rounded-full shadow-spa-xl mb-6 float">
+            <Sparkles className="w-10 h-10 text-white" strokeWidth={1.5} />
+          </div>
+          <h1 className="text-4xl font-serif font-bold text-sage-900 mb-3 tracking-tight">Track Your Mood</h1>
+          <p className="text-xl text-sage-600 font-light">How are you feeling right now?</p>
         </div>
 
         {/* Success Message */}
         {showSuccess && !showCrisisResources && (
-          <div className="card bg-green-50 border-green-200 text-center slide-up">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-success rounded-full mb-3">
-              <Check className="w-6 h-6 text-white" />
+          <div className="card bg-gradient-to-br from-primary-50 to-mint-50 border-primary-300 text-center slide-up">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full shadow-spa-lg mb-4">
+              <Check className="w-8 h-8 text-white" strokeWidth={2.5} />
             </div>
-            <p className="text-success font-medium">Mood logged successfully!</p>
-            <p className="text-sm text-text-secondary mt-1">Your feelings are valid and important</p>
+            <h3 className="font-serif text-2xl font-semibold text-sage-900 mb-2">Mood Logged!</h3>
+            <p className="text-sage-600">Your feelings are valid and important</p>
           </div>
         )}
 
