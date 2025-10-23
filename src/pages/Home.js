@@ -84,14 +84,17 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6 pb-24">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="min-h-screen px-4 py-8 pb-24">
+      <div className="max-w-2xl mx-auto space-y-8">
         {/* Welcome Header */}
-        <div className="fade-in">
-          <h1 className="text-3xl font-semibold text-text-primary mb-2">
+        <div className="fade-in text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-mint-500 rounded-full shadow-spa-lg mb-4 float">
+            <Heart className="w-8 h-8 text-white" />
+          </div>
+          <h1 className="text-4xl font-serif font-bold text-sage-900 mb-3 tracking-tight">
             {getGreeting()}{userData?.name ? `, ${userData.name}` : ''}
           </h1>
-          <p className="text-text-secondary">How are you doing today?</p>
+          <p className="text-lg text-sage-600">How is your heart today?</p>
         </div>
 
         {/* Crisis Resources - Always Visible */}
