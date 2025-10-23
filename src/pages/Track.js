@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { saveMoodEntry } from '../utils/storage';
-import { Check, X } from 'lucide-react';
+import { Check, X, Phone, Heart } from 'lucide-react';
 
 const Track = () => {
+  const navigate = useNavigate();
   const [selectedQuadrant, setSelectedQuadrant] = useState(null);
   const [selectedEmotion, setSelectedEmotion] = useState(null);
   const [intensity, setIntensity] = useState(5);
@@ -11,6 +13,7 @@ const Track = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [note, setNote] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showCrisisResources, setShowCrisisResources] = useState(false);
 
   const quadrants = {
     'high-pleasant': {
@@ -64,6 +67,11 @@ const Track = () => {
 
     saveMoodEntry(entry);
     
+    // Check if user needs crisis support (high intensity difficult emotions)
+    if ((selectedQuadrant === 'high-unpleasant' || selectedQuadrant === 'low-unpleasant') && intensity >= 8) {
+      setShowCrisisResources(true);
+    }
+    
     // Reset form
     setSelectedQuadrant(null);
     setSelectedEmotion(null);
@@ -95,13 +103,57 @@ const Track = () => {
         </div>
 
         {/* Success Message */}
-        {showSuccess && (
+        {showSuccess && !showCrisisResources && (
           <div className="card bg-green-50 border-green-200 text-center slide-up">
             <div className="inline-flex items-center justify-center w-12 h-12 bg-success rounded-full mb-3">
               <Check className="w-6 h-6 text-white" />
             </div>
             <p className="text-success font-medium">Mood logged successfully!</p>
             <p className="text-sm text-text-secondary mt-1">Your feelings are valid and important</p>
+          </div>
+        )}
+
+        {/* Crisis Resources Message */}
+        {showCrisisResources && (
+          <div className="crisis-banner slide-up">
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-semibold text-danger mb-2 flex items-center space-x-2">
+                  <Heart className="w-5 h-5" />
+                  <span>We're here for you</span>
+                </h3>
+                <p className="text-sm text-text-primary mb-3">
+                  Thank you for tracking your feelings. If you're struggling right now, please know that help is available 24/7.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <a 
+                  href="tel:988" 
+                  className="inline-flex items-center space-x-2 bg-danger hover:bg-red-600 text-white text-sm font-medium py-2 px-4 rounded-modern transition-all duration-200"
+                >
+                  <Phone size={16} />
+                  <span>Call 988 Now</span>
+                </a>
+                <a 
+                  href="sms:988" 
+                  className="inline-flex items-center space-x-2 bg-white hover:bg-gray-50 text-danger border border-danger text-sm font-medium py-2 px-4 rounded-modern transition-all duration-200"
+                >
+                  <span>Text 988</span>
+                </a>
+                <button
+                  onClick={() => navigate('/support')}
+                  className="inline-flex items-center space-x-2 bg-white hover:bg-gray-50 text-text-primary border border-border text-sm font-medium py-2 px-4 rounded-modern transition-all duration-200"
+                >
+                  <span>View All Resources</span>
+                </button>
+              </div>
+              <button
+                onClick={() => setShowCrisisResources(false)}
+                className="text-sm text-text-secondary hover:text-text-primary underline"
+              >
+                I'm okay, continue
+              </button>
+            </div>
           </div>
         )}
 
