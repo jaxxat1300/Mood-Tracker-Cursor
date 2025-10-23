@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, MessageCircle, ExternalLink, Plus, Trash2, X, Heart, Shield, Users, Sparkles } from 'lucide-react';
+import { Phone, MessageCircle, ExternalLink, Plus, Trash2, X, Heart, Shield, Users } from 'lucide-react';
 import { getSupportContacts, saveSupportContact, deleteSupportContact } from '../utils/storage';
 
 const Support = () => {

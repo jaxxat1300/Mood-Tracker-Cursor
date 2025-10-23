@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getMoodEntries } from '../utils/storage';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { TrendingUp, Calendar, Clock, Sparkles } from 'lucide-react';
+import { TrendingUp, Calendar, Clock } from 'lucide-react';
 
 const Insights = () => {
   const [entries, setEntries] = useState([]);

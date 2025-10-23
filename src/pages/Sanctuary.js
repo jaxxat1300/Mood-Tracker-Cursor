@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Play, Trash2, X, Music, Sparkles } from 'lucide-react';
+import { Plus, Play, Trash2, X, Music } from 'lucide-react';
 import { getMediaLibrary, saveVideo, deleteVideo, updateVideoPlayCount } from '../utils/storage';
 
 const Sanctuary = () => {
